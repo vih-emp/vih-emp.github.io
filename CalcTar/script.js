@@ -6,10 +6,10 @@ function addNumbers()
                     document.getElementById("result").innerText = "Result: "+ sum;
 
                 }
-                function subtractNumbers()
+function subtractNumbers()
                 {
                     const num1 = parseFloat(document.getElementById("input1").value);
                     const num2 = parseFloat(document.getElementById("input2").value);
                     const difference = num1 + num2;
-                    document.getElementById("result").innerText = "Result: "+ sum;
+                    document.getElementById("result").innerText = "Result: "+ difference;
                 }
