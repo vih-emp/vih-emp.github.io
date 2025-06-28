@@ -34,10 +34,10 @@ body
     cursor: pointer; /*might add custom cursor to the project later*/
     box-shadow: 0 0 8px #4100f3; /*something reminiscent of this colour✨*/
     transition: background 0.1s, transform 0.1s; /*You can't see me 👀👋*/
-    text-decoration: lab relative;
+    text-decoration: none;
     margin-top: 10px;
 }
-.arithmetic-btn /*generic button hover*/
+.arithmetic-btn:hover /*generic button hover*/
 {
     background: repeating-radial-gradient(ellipse at center, #4100f3 0px, #4166 15px, #0a0a23 15px, rgb(78, 78, 146)px, rgb(1, 66, 58) 30px, rgb(3, 72, 104) 45px);
     color: #0a0a23
