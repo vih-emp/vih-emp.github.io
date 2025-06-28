@@ -1,0 +1,122 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Verdana, sans-serif;
+    background: linear-gradient(to bottom, #ffe066 0%, #ffd700 100%);
+    min-height: 100vh;
+    color: #4e3b09;
+}
+header {
+    text-align: center;
+    padding: 2rem 1rem 1rem 1rem;
+    background: #fffbe6;
+    box-shadow: 0 2px 8px #f5e97b44;
+}
+.logo {
+    width: 64px;
+    margin-bottom: 0.5rem;
+}
+h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    font-family: 'Luckiest Guy', cursive, sans-serif;
+    letter-spacing: 2px;
+    color: #e6b800;
+}
+.subtitle {
+    color: #a4790b;
+    font-size: 1.1rem;
+    margin: 0.5rem 0 0 0;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.speed-test-container {
+    margin-top: 2rem;
+    padding: 2rem;
+    background: #fffde4;
+    border-radius: 22px;
+    box-shadow: 0 6px 36px #ead06755;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.corn-btn {
+    padding: 1rem 2rem;
+    background: linear-gradient(90deg, #ffd700 60%, #ffe066 100%);
+    color: #4e3b09;
+    font-size: 1.3rem;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 12px #edd36c99;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.corn-btn:hover {
+    background: linear-gradient(90deg, #ffe066 60%, #ffd700 100%);
+    transform: scale(1.03);
+}
+
+.results {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.result-item {
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #fff9c4;
+    padding: 0.7rem 1.2rem;
+    border-radius: 25px;
+    box-shadow: 0 2px 12px #e9d67d33;
+    justify-content: center;
+}
+
+.hidden {
+    display: none;
+}
+
+.corn-section {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.corn-img {
+    width: 320px;
+    max-width: 85vw;
+    border-radius: 25px;
+    box-shadow: 0 4px 28px #e1b91a55;
+}
+
+footer {
+    text-align: center;
+    padding: 1rem 0;
+    background: #fffbe6;
+    color: #7c6608;
+    font-size: 1rem;
+    box-shadow: 0 -2px 8px #fae56e33;
+}
+
+a {
+    color: #e6b800;
+    text-decoration: underline dotted;
+}
+
+a:hover {
+    color: #a4790b;
+}
