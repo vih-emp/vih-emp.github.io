@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SpeedKernel - Corn Themed Network Speed Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Check your network speed with a fun corn-themed speed test!">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="corn-favicon.png">
+</head>
+<body>
+    <header>
+        <img src="corn-logo.png" alt="Corn Logo" class="logo">
+        <h1>SpeedKernel 🌽</h1>
+        <p class="subtitle">A-maize-ing Network Speed Test</p>
+    </header>
+
+    <main>
+        <section class="speed-test-container">
+            <button id="start-btn" class="corn-btn">🌽 Start Test</button>
+            <div id="results" class="results hidden">
+                <div class="result-item">
+                    <span>Download:</span>
+                    <span id="download-speed">...</span>
+                    <span>Mbps</span>
+                </div>
+                <div class="result-item">
+                    <span>Upload:</span>
+                    <span id="upload-speed">...</span>
+                    <span>Mbps</span>
+                </div>
+                <div class="result-item">
+                    <span>Latency:</span>
+                    <span id="latency">...</span>
+                    <span>ms</span>
+                </div>
+            </div>
+        </section>
+        <section class="corn-section">
+            <img src="corn-field.png" alt="Corn Field" class="corn-img">
+        </section>
+    </main>
+
+    <footer>
+        <p>🌽 Made with corn by <a href="https://github.com/vih-emp" target="_blank">vih-emp</a> | <a href="https://github.com/vih-emp/speedkernel" target="_blank">Source on GitHub</a></p>
+    </footer>
+    <script src="speedtest.js"></script>
+</body>
+</html>
