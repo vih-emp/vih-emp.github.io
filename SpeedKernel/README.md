@@ -2,7 +2,7 @@
 
 **A-maize-ing Corn-Themed Network Speed Test**
 
-Try it: [https://vih-emp.github.io/speedkernel](https://vih-emp.github.io/speedkernel)
+Try it: [https://vih-emp.github.io/SpeedKernel](https://vih-emp.github.io/SpeedKernel)
 
 ## Features
 
@@ -13,7 +13,7 @@ Try it: [https://vih-emp.github.io/speedkernel](https://vih-emp.github.io/speedk
 
 ## Usage
 
-Open [https://vih-emp.github.io/speedkernel](https://vih-emp.github.io/speedkernel) and click "Start Test".
+Open [https://vih-emp.github.io/speedkernel](https://vih-emp.github.io/SpeedKernel) and click "Start Test".
 
 ## How it works
 
