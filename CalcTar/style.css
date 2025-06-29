@@ -84,9 +84,41 @@ button:hover, .button:hover/*generic button hover*/
     font-family: 'Press Start 2P', cursive;
     text-shadow: 0 0 5px #53f6ff
 }
+.button.locked {
+    opacity: 0.6;
+    pointer-events: none;
+    filter: grayscale(50%);
+    cursor: not-allowed;
+    position: relative;
+}
+
+/* Tooltip styles */
+.button.locked::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 50%;
+    top: 110%;
+    transform: translateX(-50%);
+    background: #23234f;
+    color: #fff;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.7em;
+    padding: 8px 12px;
+    border-radius: 5px;
+    opacity: 0;
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 10;
+    transition: opacity 0.2s;
+    box-shadow: 0 0 8px #4100f3;
+}
+
+.button.locked:hover::after,
+.button.locked:focus::after {
+    opacity: 1;
+}
 /*never again please*/
  /*Oh, the pain!*/
   /*Oh, the agony!*/
    /*Oh the CSS docs review! ;( */
 
-/*This script has under gone the 4.8 Modifications and will soon have a major update*/
