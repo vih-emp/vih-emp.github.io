@@ -85,12 +85,22 @@ button:hover, .button:hover/*generic button hover*/
     text-shadow: 0 0 5px #53f6ff
 }
 .button.locked {
-    opacity: 0.6;
-    pointer-events: none;
-    filter: grayscale(50%);
-    cursor: not-allowed;
-    position: relative;
+    display: inline-flex; /*FLEX!!! 💪*/
+    padding: 18px 32px;
+    font-size: 1em;
+    font-family: 'Press Start 2P',cursive;
+    color: #fff;
+    background: repeating-linear-gradient(90deg, #1a1a40,#23234f 80%);
+    border: 4px solid #4166f5; /*side note, i own project 4166, might do smn cool with it 🧐😐*/
+    border-radius: 7px;
+    margin-bottom: 35px;
+    cursor: pointer; /*might add custom cursor to the project later*/
+    box-shadow: 0 0 8px #4100f3; /*something reminiscent of this colour✨*/
+    transition: background 0.1s, transform 0.1s; /*You can't see me 👀👋*/
+    text-decoration: none;
+    margin-top: 10px;
 }
+
 
 /* Tooltip styles */
 .button.locked::after {
@@ -115,7 +125,8 @@ button:hover, .button:hover/*generic button hover*/
 
 .button.locked:hover::after,
 .button.locked:focus::after {
-    opacity: 1;
+    background: repeating-radial-gradient(ellipse at center, #4100f3 0px, #4166 15px, #0a0a23 15px, rgb(78, 78, 146)px, rgb(1, 66, 58) 30px, rgb(3, 72, 104) 45px);
+    color: #0a0a23
 }
 /*never again please*/
  /*Oh, the pain!*/
