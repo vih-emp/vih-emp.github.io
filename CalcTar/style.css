@@ -20,7 +20,7 @@ body
     letter-spacing: 2px;
     text-shadow: 0 0 10px #53f6ff, 0 0 20px #00fff3;
 }
-.button /*generic button*/
+button, .button /*generic button*/
 {
     display: inline-flex; /*FLEX!!! 💪*/
     padding: 18px 32px;
@@ -37,7 +37,7 @@ body
     text-decoration: none;
     margin-top: 10px;
 }
-.button:hover /*generic button hover*/
+button:hover, .button:hover/*generic button hover*/
 {
     background: repeating-radial-gradient(ellipse at center, #4100f3 0px, #4166 15px, #0a0a23 15px, rgb(78, 78, 146)px, rgb(1, 66, 58) 30px, rgb(3, 72, 104) 45px);
     color: #0a0a23
@@ -71,4 +71,4 @@ body
   /*Oh, the agony!*/
    /*Oh the CSS docs review! ;( */
 
-/*This script has under gone the 4.0 Modifications and will soon have a major update*/
+/*This script has under gone the 4.6 Modifications and will soon have a major update*/
