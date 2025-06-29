@@ -10,6 +10,24 @@ body
     flex-direction: column; /*FLEX!! 💪*/
     align-items: left;
 }
+h1, h3, h5 {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 3em;
+    color: #fff;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px #2225db, 0 0 20px #440768;
+}
+h2, h4, h6 {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 3em;
+    color: #fff;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px #058666, 0 0 20px #393558;
+}
 .title
 {
     font-family: 'Press Start 2P', cursive;
@@ -71,4 +89,4 @@ button:hover, .button:hover/*generic button hover*/
   /*Oh, the agony!*/
    /*Oh the CSS docs review! ;( */
 
-/*This script has under gone the 4.6 Modifications and will soon have a major update*/
+/*This script has under gone the 4.8 Modifications and will soon have a major update*/
