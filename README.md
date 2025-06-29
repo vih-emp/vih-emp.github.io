@@ -1,1 +1,1 @@
-Why, hello there!
+Welcome to Vih-emp's Page!
