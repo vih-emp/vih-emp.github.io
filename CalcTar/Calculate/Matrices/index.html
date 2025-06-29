@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Matrix and Vector Calculator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+        <!--Thank You CodeMan38 ! -->
+    <link rel ="stylesheet" href = "../../style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Matrix & Vector Calculator</h2>
+    <label>Matrix A (comma-separated rows):</label>
+    <textarea id="matrixA" rows="3">1,2;3,4</textarea>
+
+    <label>Matrix/Vector B (comma-separated rows):</label>
+    <textarea id="matrixB" rows="3">5,6;7,8</textarea>
+
+    <div class="btn-row">
+      <button onclick="addMatrices()">A + B</button>
+      <button onclick="multiplyMatrices()">A × B</button>
+      <button onclick="dotProduct()">A ⋅ B (vector dot)</button>
+      <button onclick="clearResult()">Clear</button>
+    </div>
+    <div id="result"></div>
+  </div>
+  <script src="matrix_vector_calc.js"></script>
+</body>
+</html>
