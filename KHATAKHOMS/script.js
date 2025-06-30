@@ -1,8 +1,12 @@
-// Wait for the adventure intro to finish, then show the dramatic sequence
+// Wait for the adventure intro to finish, then show the torches and the dramatic sequence
 window.addEventListener('DOMContentLoaded', () => {
+  const torchPair = document.getElementById('torch-pair');
   const secondSequence = document.getElementById('second-sequence');
   setTimeout(() => {
-    secondSequence.style.opacity = 1;
+    torchPair.style.opacity = 1;
+    setTimeout(() => {
+      secondSequence.style.opacity = 1;
+    }, 1200); // torches appear first, then sequence
   }, 12000); // matches animation duration in CSS (12s)
 });
 

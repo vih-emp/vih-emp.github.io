@@ -106,16 +106,31 @@ body {
   margin-top: 0.5vw;
 }
 
-/* Torch element */
-.torch-container {
+/* Torch elements (paired) */
+.torch-pair {
   position: absolute;
-  right: 5vw;
-  bottom: 8vh;
-  z-index: 4;
+  width: 100vw;
+  top: 35vh;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  pointer-events: none;
+  transition: opacity 1s;
+  display: flex;
+  justify-content: space-between;
+}
+
+.torch-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  pointer-events: none;
+}
+
+.left-torch {
+  margin-left: 7vw;
+}
+.right-torch {
+  margin-right: 7vw;
 }
 
 .torch-flame {
@@ -146,14 +161,20 @@ body {
 
 .torch-light {
   position: absolute;
-  right: 2.1vw;
-  bottom: 0.5vh;
-  width: 360px;
-  height: 360px;
-  background: radial-gradient(circle at 90% 70%, #fff3bb11 0%, #ffec7e22 40%, #0000 75%);
+  width: 210px;
+  height: 210px;
+  background: radial-gradient(circle at 50% 10%, #fff3bb11 0%, #ffec7e33 55%, #0000 95%);
   pointer-events: none;
-  z-index: 1;
   filter: blur(2px);
+  z-index: 1;
+}
+.left-light {
+  left: 7vw;
+  top: 0;
+}
+.right-light {
+  right: 7vw;
+  top: 0;
 }
 
 /* Responsive adjustments */
@@ -165,4 +186,9 @@ body {
   .scrolling-text h1 { font-size: 8vw;}
   .dramatic-message { font-size: 5vw; }
   .countdown { font-size: 2.5vw;}
+  .torch-pair { top: 24vh; }
+  .left-torch { margin-left: 1vw; }
+  .right-torch { margin-right: 1vw; }
+  .left-light { left: 1vw; }
+  .right-light { right: 1vw; }
 }
