@@ -1,9 +1,11 @@
-// Wait for the adventure intro to finish, then show the torches and the dramatic sequence
+// Show torches after main scroll, then sequence
 window.addEventListener('DOMContentLoaded', () => {
-  const torchPair = document.getElementById('torch-pair');
+  const leftTorch = document.getElementById('left-torch');
+  const rightTorch = document.getElementById('right-torch');
   const secondSequence = document.getElementById('second-sequence');
   setTimeout(() => {
-    torchPair.style.opacity = 1;
+    leftTorch.style.opacity = 1;
+    rightTorch.style.opacity = 1;
     setTimeout(() => {
       secondSequence.style.opacity = 1;
     }, 1200); // torches appear first, then sequence
