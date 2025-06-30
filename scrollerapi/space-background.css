@@ -1,0 +1,33 @@
+body {
+  /* Use a space emoji as the background image */
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80'><text x='0' y='62' font-size='64'>🌌</text></svg>");
+  background-repeat: repeat;
+  background-size: 80px 80px;
+
+  /* Animate the background position to move to the southeast */
+  animation: space-scroll 20s linear infinite;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+@keyframes space-scroll {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 400px 400px;
+  }
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  color: white;
+  text-shadow: 1px 1px 5px #000, 0 0 10px #2a2a5e;
+  font-family: system-ui, sans-serif;
+  text-align: center;
+  margin-top: 20vh;
+  font-size: 2rem;
+}
