@@ -114,16 +114,20 @@ body {
   right: 7vw;
 }
 
+/* Torch flame should be on top of the stick, so stick comes first in HTML */
 .torch-flame {
   width: 24px;
   height: 48px;
   border-radius: 60% 60% 40% 40%;
   background: radial-gradient(ellipse at center, #fffbe7 0%, #ff9800 40%, #d36c0f 70%, #000 100%);
   filter: blur(0.3px);
-  margin-bottom: -8px;
+  margin-top: -44px; /* Pull flame up so it sits above the stick */
+  margin-bottom: -8px; /* Slight overlap for realism */
   animation: flame-flicker 0.18s infinite alternate;
   box-shadow: 0 0 28px 12px #ffeb3b, 0 0 80px 30px #ffd70055;
-  z-index: 2;
+  z-index: 3;
+  position: relative;
+  pointer-events: none;
 }
 
 @keyframes flame-flicker {
@@ -133,6 +137,7 @@ body {
   100% { transform: scaleY(1) scaleX(1) translateY(0); }
 }
 
+/* Torch stick appears below the flame */
 .torch-stick {
   width: 8px;
   height: 60px;
@@ -140,28 +145,29 @@ body {
   border-radius: 5px;
   box-shadow: 0 2px 8px #000a;
   z-index: 2;
+  position: relative;
 }
 
 .torch-light {
   position: absolute;
-  top: -55px;
+  top: -65px;
   left: 50%;
   transform: translateX(-50%);
-  width: 90px;
-  height: 120px;
+  width: 120px;
+  height: 160px;
   background: radial-gradient(
-    ellipse at 50% 30%,
-    rgba(255, 236, 126, 0.45) 0%,
-    rgba(255, 236, 126, 0.25) 40%,
-    rgba(255, 236, 126, 0.12) 65%,
-    rgba(255, 236, 126, 0.05) 85%,
+    ellipse at 50% 28%,
+    rgba(255, 244, 180, 0.5) 0%,
+    rgba(255, 230, 80, 0.22) 36%,
+    rgba(255, 200, 30, 0.11) 58%,
+    rgba(255, 200, 30, 0.05) 77%,
     rgba(0,0,0,0) 100%
   );
-  pointer-events: none;
-  filter: blur(10px);
-  z-index: 1;
-  opacity: 0.7;
+  opacity: .85;
+  filter: blur(18px);
   border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
 }
 
 /* Responsive adjustments */
