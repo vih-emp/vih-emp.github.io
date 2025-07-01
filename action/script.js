@@ -1,4 +1,4 @@
-// Music toggle
+
 const audio = document.getElementById('bg-music');
 const btn = document.getElementById('music-toggle');
 let isMuted = false;
@@ -9,7 +9,7 @@ btn.addEventListener('click', () => {
   btn.textContent = isMuted ? '🔇' : '🔈';
 });
 
-// Unmute on first interaction (browser policies)
+
 window.addEventListener('click', () => {
   audio.muted = isMuted;
 }, { once: true });
