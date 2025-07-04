@@ -9,6 +9,154 @@
     <link rel="icon" href="SpeedKernel.png">
 </head>
 <body>
+    <!--
+  Piston Gate Animation Component (Reusable)
+  - Covers entire viewport with metallic piston "doors"
+  - After ~3s, plays a steam hiss and opens left/right with lots of animated steam
+  - Call pistonGateOpen() to start the reveal animation programmatically
+  - To replay: call pistonGateReplay()
+  - To auto-play on load, uncomment the last line
+  - Add this file’s contents to your projects or use as a template/partial
+-->
+<style>
+  #piston-gate {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100vw; height: 100vh;
+      z-index: 1100;
+      pointer-events: none;
+      overflow: hidden;
+  }
+  .piston-half {
+      position: absolute;
+      top: 0;
+      width: 52vw;
+      height: 100vh;
+      background: linear-gradient(120deg, #43484b 0%, #23272b 70%, #737c7c 100%);
+      box-shadow: 0 0 45px #000a, 0 4px 30px #222d;
+      border-top: 8px solid #bfc6ce;
+      border-bottom: 8px solid #bfc6ce;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-end;
+      transition: transform 1.5s cubic-bezier(.7,0,.4,1);
+      will-change: transform;
+      overflow: visible;
+  }
+  .piston-half.left {
+      left: 0;
+      border-right: 4px solid #bfc6ce;
+      align-items: flex-end;
+  }
+  .piston-half.right {
+      right: 0;
+      border-left: 4px solid #bfc6ce;
+      align-items: flex-start;
+  }
+  .piston-bolts {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 80%;
+      margin: 0 8px;
+  }
+  .piston-bolt {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 60% 40%, #eee 45%, #a3b0b7 60%, #444 100%);
+      box-shadow: 0 1px 2px #2228, inset 0 2px 3px #fff7, inset 0 -2px 4px #000c;
+      border: 2px solid #7a8b93;
+      margin: 12px 0;
+  }
+  #piston-gate.revealed .piston-half.left {
+      transform: translateX(-110vw);
+  }
+  #piston-gate.revealed .piston-half.right {
+      transform: translateX(110vw);
+  }
+  .steam { position: absolute; top: 48%; left: 49.7%; width: 30px; height: 30px; pointer-events: none; z-index: 112; opacity: 0; filter: blur(0.5px);}
+  .steam.puff { animation: steam-puff 1.4s ease-out forwards;}
+  @keyframes steam-puff { 0%{opacity:0;transform:scale(0.6)translate(-12px,0);} 6%{opacity:1;} 60%{opacity:0.8;} 100%{opacity:0;transform:scale(1.24)translate(-18px,-38px);} }
+  .steam2.puff { animation: steam-puff2 1.7s ease-out forwards;}
+  @keyframes steam-puff2 { 0%{opacity:0;transform:scale(0.45)translate(4px,0);} 5%{opacity:1;} 65%{opacity:0.7;} 100%{opacity:0;transform:scale(1.45)translate(15px,-47px);} }
+  .steam3.puff {animation:steam-puff3 1.8s ease-out forwards;}
+  @keyframes steam-puff3 {0%{opacity:0;transform:scale(0.7)translate(-8px,8px);}10%{opacity:1;}65%{opacity:0.7;}100%{opacity:0;transform:scale(1.32)translate(-23px,-44px);}}
+  .steam4.puff {animation:steam-puff4 1.3s ease-out forwards;}
+  @keyframes steam-puff4 {0%{opacity:0;transform:scale(0.5)translate(7px,5px);}10%{opacity:1;}65%{opacity:0.75;}100%{opacity:0;transform:scale(1.11)translate(28px,-28px);}}
+  .steam5.puff {animation:steam-puff5 1.9s ease-out forwards;}
+  @keyframes steam-puff5 {0%{opacity:0;transform:scale(0.65)translate(-14px,-2px);}10%{opacity:1;}80%{opacity:0.5;}100%{opacity:0;transform:scale(1.3)translate(-33px,-56px);}}
+  .steam6.puff {animation:steam-puff6 1.2s ease-out forwards;}
+  @keyframes steam-puff6 {0%{opacity:0;transform:scale(0.39)translate(10px,2px);}7%{opacity:1;}50%{opacity:0.7;}100%{opacity:0;transform:scale(1.1)translate(22px,-31px);}}
+</style>
+<div id="piston-gate">
+    <div class="piston-half left"><div class="piston-bolts"><div class="piston-bolt"></div><div class="piston-bolt"></div><div class="piston-bolt"></div></div></div>
+    <div class="piston-half right"><div class="piston-bolts"><div class="piston-bolt"></div><div class="piston-bolt"></div><div class="piston-bolt"></div></div></div>
+    <!-- Steam puffs -->
+    <svg class="steam" id="steam1" width="30" height="30"><ellipse cx="15" cy="16" rx="10" ry="10" fill="url(#steamGradA)" /><defs><radialGradient id="steamGradA" cx="50%" cy="50%" r="60%"><stop offset="0%" stop-color="white" stop-opacity="0.8"/><stop offset="100%" stop-color="#cbeeff" stop-opacity="0"/></radialGradient></defs></svg>
+    <svg class="steam steam2" id="steam2" width="30" height="30"><ellipse cx="14" cy="15" rx="8" ry="8" fill="url(#steamGradB)" /><defs><radialGradient id="steamGradB" cx="50%" cy="50%" r="70%"><stop offset="0%" stop-color="#fff" stop-opacity="0.7"/><stop offset="100%" stop-color="#d7faff" stop-opacity="0"/></radialGradient></defs></svg>
+    <svg class="steam steam3" id="steam3" width="29" height="30"><ellipse cx="12" cy="17" rx="7" ry="7" fill="url(#steamGradA)" /></svg>
+    <svg class="steam steam4" id="steam4" width="27" height="27"><ellipse cx="13" cy="12" rx="8" ry="7" fill="url(#steamGradB)" /></svg>
+    <svg class="steam steam5" id="steam5" width="32" height="32"><ellipse cx="18" cy="14" rx="11" ry="8" fill="url(#steamGradA)" /></svg>
+    <svg class="steam steam6" id="steam6" width="22" height="20"><ellipse cx="10" cy="10" rx="7" ry="6" fill="url(#steamGradB)" /></svg>
+    <svg class="steam steam2" id="steam7" width="19" height="19"><ellipse cx="10" cy="10" rx="7" ry="7" fill="url(#steamGradA)" /></svg>
+    <svg class="steam steam3" id="steam8" width="15" height="13"><ellipse cx="7" cy="7" rx="5" ry="5" fill="url(#steamGradB)" /></svg>
+    <svg class="steam steam4" id="steam9" width="15" height="13"><ellipse cx="7" cy="7" rx="5" ry="5" fill="url(#steamGradA)" /></svg>
+    <svg class="steam steam5" id="steam10" width="15" height="13"><ellipse cx="7" cy="7" rx="5" ry="5" fill="url(#steamGradA)" /></svg>
+    <svg class="steam steam6" id="steam11" width="17" height="13"><ellipse cx="7" cy="7" rx="5" ry="5" fill="url(#steamGradB)" /></svg>
+    <audio id="steam-audio" preload="auto">
+        <source src="data:audio/wav;base64,UklGRuABAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YYABAAD//wAAABgAABwAAACAgAAAgIAAAICA/4CAgP+AgID/gICA/4CAgP+AgICA/wAAAAAAAAAAAgID/wAAAAAAAgID/wAAAgID/wAAAAAAAgID/gICA/4CAgP+AgID/gICA/4CAgP+AgICA/4CAgP+AgID/gICA/4CAgP8AAACAgADgAAAgAAAAAAAgAAAgICAAIAAAAgAAAAAACAAACAgAAAgAAAAAAAgAAAgAAAAAAAgAAAgAA" type="audio/wav">
+    </audio>
+</div>
+<script>
+/**
+ * Plays the piston gate reveal animation.
+ * Use pistonGateOpen() to play, pistonGateReplay() to play again.
+ * The overlay will hide itself when finished.
+ */
+function pistonGateOpen() {
+    var gate = document.getElementById('piston-gate');
+    if (!gate) return;
+    gate.style.display = '';
+    gate.classList.remove('revealed');
+    // Reset all steam
+    for(let i=1;i<=11;i++){
+        var el = document.getElementById('steam'+i);
+        if(el) el.classList.remove('puff','steam2','steam3','steam4','steam5','steam6');
+    }
+    setTimeout(function() {
+        var audio = document.getElementById('steam-audio');
+        if (audio) { audio.currentTime = 0; audio.play(); }
+        document.getElementById('steam1').classList.add('puff');
+        setTimeout(function(){document.getElementById('steam2').classList.add('puff');},120);
+        setTimeout(function(){document.getElementById('steam3').classList.add('puff');},210);
+        setTimeout(function(){document.getElementById('steam4').classList.add('puff');},260);
+        setTimeout(function(){document.getElementById('steam5').classList.add('puff');},320);
+        setTimeout(function(){document.getElementById('steam6').classList.add('puff');},410);
+        setTimeout(function(){document.getElementById('steam7').classList.add('puff');},530);
+        setTimeout(function(){document.getElementById('steam8').classList.add('puff');},450);
+        setTimeout(function(){document.getElementById('steam9').classList.add('puff');},500);
+        setTimeout(function(){document.getElementById('steam10').classList.add('puff');},600);
+        setTimeout(function(){document.getElementById('steam11').classList.add('puff');},720);
+    }, 2700);
+    setTimeout(function() {
+        gate.classList.add('revealed');
+        setTimeout(function(){
+            gate.style.display = 'none';
+        }, 1600);
+    }, 3000);
+}
+function pistonGateReplay() {
+    var gate = document.getElementById('piston-gate');
+    if (!gate) return;
+    gate.style.display = '';
+    window.scrollTo({top: 0, behavior: 'smooth'});
+    setTimeout(pistonGateOpen, 40);
+}
+// Uncomment to auto-play piston on load:
+// window.addEventListener('DOMContentLoaded', pistonGateOpen);
+</script>
     <header>
         <h1>SpeedKernel 🌽</h1>
         <p class="subtitle">A-maize-ing Network Speed Test</p>
