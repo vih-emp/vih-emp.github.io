@@ -1,36 +1,164 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>
-            Vih-emp's Page!
-        </title>
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
-        <h1>Check This Out!</h1>
-        <a href="https://vih-emp.github.io/CalcTar/">
-            CalcTar <span style="color:cyan;"><b>NEW!</b></span>
-        </a>
-        <br>
-        <p>
-            CalcTar: Calculation Target
-            The calculator for all your calculating needs.
-        </p>
-        <a href="https://vih-emp.github.io/CalcTar/Arithmetic//">
-            Just you and me... <span style="color:cyan;"><b>NEW!</b></span>
-        </a>
-        <br>
-        <p>CalcTar Arithmetic Operations Section Added!</p>
-        <h2>My Projects</h2>
-        <a href="https://vih-emp.github.io/CalcTar/">
-            CalcTar <span style="color:cyan;"><b>NEW!</b></span>
-        </a>
-        <br>
-        <a href="https://vih-emp.github.io/SpeedKernel">SpeedKernel</a>
-        <br>
-        <a href="https://vih-emp.github.io/hello/hello.html">Why, hello there!</a>
-        <br>
-    </body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vih-emp's Page!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Metallic icons font for some shine -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+    <style>
+        :root {
+            --metal-bg: linear-gradient(135deg, #e6e6e6 0%, #b3b3b3 40%, #6e6e6e 100%);
+            --metal-shadow: 0 4px 30px #bbb8, 0 1.5px 0 #fff9, inset 0 1px 15px #fff6, inset 0 -1px 8px #3333;
+            --accent: #00cfff;
+            --metal-border: 2.5px solid #bfc6ce;
+            --gauge-green: #1de76c;
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            min-height: 100vh;
+            background: var(--metal-bg), #b3b3b3;
+            box-shadow: 0 0 190px #5a5a5a inset;
+            font-family: 'Montserrat', sans-serif;
+            color: #222;
+            transition: background 0.4s;
+            position: relative;
+            overflow-x: hidden;
+        }
+        h1, h2 {
+            color: #444;
+            text-shadow: 0 1px 0 #fff, 0 2px 12px #ddd8;
+            letter-spacing: 2px;
+        }
+        h1 {
+            margin-top: 2.1em;
+            font-size: 2.7em;
+            text-align: center;
+            font-weight: 700;
+            position: relative;
+        }
+        h1 .fa-gear {
+            color: #bfc6ce;
+            margin-right: 0.3em;
+            animation: spin 2.5s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg);}
+            100% { transform: rotate(360deg);}
+        }
+        .main-content {
+            background: rgba(240,240,240,0.92);
+            border-radius: 22px;
+            border: var(--metal-border);
+            box-shadow: var(--metal-shadow);
+            width: min(95vw, 540px);
+            margin: 2em auto 2.5em auto;
+            padding: 2.1em 1.5em 1.7em 1.5em;
+            position: relative;
+            z-index: 2;
+        }
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 700;
+            padding: 0.1em 0.3em;
+            border-radius: 6px;
+            background: linear-gradient(90deg, #eafaff 0, #b3e9fc 100%);
+            box-shadow: 0 1px 0 #fff7, 0 0 8px #b9f7ff33;
+            margin-bottom: 0.2em;
+            display: inline-block;
+            transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+        }
+        a:hover {
+            color: #fff;
+            background: linear-gradient(90deg, #00cfff 0, #1e4d61 100%);
+            box-shadow: 0 4px 18px #00cfff85;
+            text-shadow: 0 2px 12px #00cfff99;
+        }
+        p {
+            margin: 0.7em 0 1.5em 0.3em;
+            font-size: 1.09em;
+            color: #444f;
+        }
+        .project-section {
+            margin-top: 2.3em;
+        }
+        .project-list {
+            list-style: none;
+            padding: 0;
+        }
+        .project-item {
+            margin-bottom: 1.1em;
+            display: flex;
+            align-items: center;
+            gap: 0.7em;
+        }
+        .gauge-cert {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(90deg, #eafff2 0, #d5ffe4 100%);
+            color: var(--gauge-green);
+            font-weight: 700;
+            font-size: 0.97em;
+            border-radius: 6px;
+            padding: 0.11em 0.6em 0.11em 0.4em;
+            margin-left: 0.2em;
+            box-shadow: 0 1.5px 5px #1de76c22;
+            border: 1.3px solid #bffeda;
+            user-select: none;
+        }
+        .gauge-cert .fa-gauge-high {
+            margin-right: 0.4em;
+        }
+    </style>
+</head>
+<body>
+    <h1>
+        <i class="fa-solid fa-gear"></i>
+        Vih-emp's Page!
+    </h1>
+    <div class="main-content">
+        <h2>Projects</h2>
+        <ul class="project-list">
+            <!-- Add new projects below, following the pattern -->
+            <li class="project-item">
+                <a href="https://vih-emp.github.io/KHATAKHOMS" target="_blank" rel="noopener">KHATAKHOMS</a>
+            </li>
+            <li class="project-item">
+                <a href="https://vih-emp.github.io/ihn8n2" target="_blank" rel="noopener">ihn8n2</a>
+            </li>
+            <li class="project-item">
+                <a href="https://vih-emp.github.io/scrollerapi" target="_blank" rel="noopener">scrollerapi</a>
+            </li>
+            <li class="project-item">
+                <a href="https://vih-emp.github.io/tm" target="_blank" rel="noopener">tm</a>
+            </li>
+            <!-- Gauge Certified projects below -->
+            <li class="project-item">
+                <a href="https://vih-emp.github.io/another-project" target="_blank" rel="noopener">Another Project</a>
+                <span class="gauge-cert"><i class="fa-solid fa-gauge-high"></i>Gauge Certified</span>
+            </li>
+            <li class="project-item">
+                <a href="https://vih-emp.github.io/project-xyz" target="_blank" rel="noopener">Project XYZ</a>
+                <span class="gauge-cert"><i class="fa-solid fa-gauge-high"></i>Gauge Certified</span>
+            </li>
+            <li class="project-item">
+                <a href="https://vih-emp.github.io/coolwidget" target="_blank" rel="noopener">CoolWidget</a>
+                <span class="gauge-cert"><i class="fa-solid fa-gauge-high"></i>Gauge Certified</span>
+            </li>
+            <li class="project-item">
+                <a href="https://vih-emp.github.io/finviz" target="_blank" rel="noopener">Finviz</a>
+                <span class="gauge-cert"><i class="fa-solid fa-gauge-high"></i>Gauge Certified</span>
+            </li>
+            <!-- ...add more Gauge Certified projects here as needed -->
+        </ul>
+        <div style="margin-top:2em;">
+            <p>Want your project to be Gauge Certified? <a href="#">Contact me!</a></p>
+        </div>
+    </div>
+</body>
 </html>
-<!-- The Big on' -->
