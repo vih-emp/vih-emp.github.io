@@ -126,6 +126,24 @@
       color: #a67c37;
       transform: scale(1.04);
     }
+    .sound-btn {
+      margin: 10px;
+      padding: 20px;
+      font-size: 18px;
+      cursor: pointer;
+      font-family: 'Cedarville Cursive', serif;
+      background:#fbeec1;
+      color:#7c6332;
+      border:2px solid #bfa76a;
+      border-radius:8px;
+      box-shadow: 0 2px 12px #bfa76a55;
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+    }
+    .sound-btn:hover {
+      background: #f1e1b0;
+      color: #a67c37;
+      transform: scale(1.04);
+    }
     @media (max-width: 600px) {
       h1 { font-size: 1.5em; }
       #notation { padding: 1em 0.5em 0.5em 0.5em; }
@@ -147,6 +165,11 @@
       Your browser does not support the audio element.
     </audio>
     <div style="font-style:italic;font-size:0.95em;color:#aa8844bb;margin-top:0.6em;">(Music will play on button click. <br>Replace the <code>src</code> in the code with your own audio file if needed.)</div>
+  </div>
+
+  <div style="margin-bottom: 1.5em;">
+    <button class="sound-btn" onclick="playMozart()">✨ Play Mozart with Oscillator</button>
+    <span style="font-style:italic;font-size:0.95em;color:#aa8844bb;">(Synthesized - browser only!)</span>
   </div>
   
   <div id="notation">
@@ -220,6 +243,62 @@
       setTimeout(notesLoop, randomInt(600, 1400));
     }
     notesLoop();
+
+    // --- Mozart Rondo alla Turca Oscillator Section ---
+    // Frequencies for piano keys (C4 = 261.63Hz)
+    const NOTES_MAP = {
+      'C4': 261.63,  'C#4': 277.18, 'D4': 293.66,  'D#4': 311.13, 'E4': 329.63,
+      'F4': 349.23,  'F#4': 369.99, 'G4': 392.00,  'G#4': 415.30, 'A4': 440.00,
+      'A#4': 466.16, 'B4': 493.88,  'C5': 523.25,  'C#5': 554.37, 'D5': 587.33,
+      'D#5': 622.25, 'E5': 659.25,  'F5': 698.46,  'F#5': 739.99, 'G5': 783.99,
+      'G#5': 830.61, 'A5': 880.00,  'A#5': 932.33, 'B5': 987.77,  'C6': 1046.50
+    };
+
+    // Opening melody of Rondo alla Turca: [Note, Duration in ms]
+    const MELODY = [
+      ['E5', 220], ['D#5', 110], ['E5', 110], ['D#5', 110], ['E5', 110],
+      ['B4', 110], ['D5', 110], ['C5', 110], ['A4', 330],
+
+      ['C4', 110], ['E4', 110], ['A4', 110], ['B4', 330],
+      ['E4', 110], ['G#4', 110], ['B4', 110], ['C5', 330],
+
+      ['E4', 110], ['E5', 110], ['D#5', 110], ['E5', 110],
+      ['D#5', 110], ['E5', 110], ['B4', 110], ['D5', 110], ['C5', 110], ['A4', 330]
+    ];
+
+    function playNote(ctx, freq, duration, when) {
+      const osc = ctx.createOscillator();
+      osc.type = 'triangle'; // Smoother than sine, a bit more "piano-like"
+      osc.frequency.value = freq;
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      gain.gain.setValueAtTime(0.17, when);
+      gain.gain.linearRampToValueAtTime(0.0, when + duration/1000 * 0.9);
+
+      osc.start(when);
+      osc.stop(when + duration/1000);
+    }
+
+    function playMozart() {
+      const btnMozart = event?.target;
+      if (btnMozart) {
+        btnMozart.disabled = true;
+        btnMozart.textContent = "Playing...";
+      }
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      let now = ctx.currentTime + 0.1; // small delay before starting
+      for (const [note, dur] of MELODY) {
+        if (NOTES_MAP[note]) playNote(ctx, NOTES_MAP[note], dur, now);
+        now += dur / 1000;
+      }
+      setTimeout(() => {
+        if (btnMozart) {
+          btnMozart.disabled = false;
+          btnMozart.textContent = "✨ Play Mozart with Oscillator";
+        }
+      }, (now - ctx.currentTime) * 1000 + 100);
+    }
   </script>
 </body>
 </html>
