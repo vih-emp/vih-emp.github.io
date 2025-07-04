@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     <title>Vih-emp's Page!</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Metallic icons font for some shine -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
     <style>
         :root {
-            --metal-bg: linear-gradient(135deg, #e6e6e6 0%, #b3b3b3 40%, #6e6e6e 100%);
-            --metal-shadow: 0 4px 30px #bbb8, 0 1.5px 0 #fff9, inset 0 1px 15px #fff6, inset 0 -1px 8px #3333;
+            --metal-bg: linear-gradient(135deg, #23272b 0%, #44484b 40%, #181a1b 100%);
+            --metal-shadow: 0 4px 30px #222b, 0 1.5px 0 #fff3, inset 0 1px 15px #fff3, inset 0 -1px 8px #0007;
             --accent: #00cfff;
-            --metal-border: 2.5px solid #bfc6ce;
+            --metal-border: 2.5px solid #6f7e8a;
             --gauge-green: #1de76c;
+            --steam1: rgba(205,235,255,0.13);
+            --steam2: rgba(220,240,255,0.22);
         }
         html, body {
             height: 100%;
@@ -21,17 +22,17 @@
         }
         body {
             min-height: 100vh;
-            background: var(--metal-bg), #b3b3b3;
-            box-shadow: 0 0 190px #5a5a5a inset;
+            background: var(--metal-bg), #23272b;
+            box-shadow: 0 0 300px #191919 inset;
             font-family: 'Montserrat', sans-serif;
-            color: #222;
+            color: #eee;
             transition: background 0.4s;
             position: relative;
             overflow-x: hidden;
         }
         h1, h2 {
-            color: #444;
-            text-shadow: 0 1px 0 #fff, 0 2px 12px #ddd8;
+            color: #d4d8dd;
+            text-shadow: 0 1px 0 #222, 0 2px 14px #000b;
             letter-spacing: 2px;
         }
         h1 {
@@ -51,7 +52,7 @@
             100% { transform: rotate(360deg);}
         }
         .main-content {
-            background: rgba(240,240,240,0.92);
+            background: rgba(30,33,36,0.93);
             border-radius: 22px;
             border: var(--metal-border);
             box-shadow: var(--metal-shadow);
@@ -67,8 +68,8 @@
             font-weight: 700;
             padding: 0.1em 0.3em;
             border-radius: 6px;
-            background: linear-gradient(90deg, #eafaff 0, #b3e9fc 100%);
-            box-shadow: 0 1px 0 #fff7, 0 0 8px #b9f7ff33;
+            background: linear-gradient(90deg, #212e32 0, #1e4d61 100%);
+            box-shadow: 0 1px 0 #0017, 0 0 8px #00cfff22;
             margin-bottom: 0.2em;
             display: inline-block;
             transition: background 0.18s, color 0.18s, box-shadow 0.18s;
@@ -82,7 +83,7 @@
         p {
             margin: 0.7em 0 1.5em 0.3em;
             font-size: 1.09em;
-            color: #444f;
+            color: #d4d8ddaf;
         }
         .project-section {
             margin-top: 2.3em;
@@ -100,7 +101,7 @@
         .gauge-cert {
             display: inline-flex;
             align-items: center;
-            background: linear-gradient(90deg, #eafff2 0, #d5ffe4 100%);
+            background: linear-gradient(90deg, #254b32 0, #1de76c33 100%);
             color: var(--gauge-green);
             font-weight: 700;
             font-size: 0.97em;
@@ -108,15 +109,215 @@
             padding: 0.11em 0.6em 0.11em 0.4em;
             margin-left: 0.2em;
             box-shadow: 0 1.5px 5px #1de76c22;
-            border: 1.3px solid #bffeda;
+            border: 1.3px solid #38ffb4a0;
             user-select: none;
         }
         .gauge-cert .fa-gauge-high {
             margin-right: 0.4em;
         }
+        /* Metallic Plates */
+        .metal-plate {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            width: 28px;
+            background: linear-gradient(180deg, #3e454a 0%, #242628 100%);
+            z-index: 10;
+            box-shadow: 0 0 18px #0008, 0 0 3px #4448 inset;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            pointer-events: none;
+        }
+        .metal-plate.left { left: 0; }
+        .metal-plate.right { right: 0; }
+        .bolt {
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 60% 40%, #eee 45%, #a3b0b7 60%, #444 100%);
+            box-shadow: 0 1px 2px #2228, inset 0 2px 3px #fff7, inset 0 -2px 4px #000c;
+            border: 2px solid #7a8b93;
+            margin-bottom: 9px;
+        }
+        /* Piston gate overlay */
+        #piston-gate {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            width: 100vw; height: 100vh;
+            z-index: 99;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .piston-half {
+            position: absolute;
+            top: 0;
+            width: 52vw;
+            height: 100vh;
+            background: linear-gradient(120deg, #43484b 0%, #23272b 70%, #737c7c 100%);
+            box-shadow: 0 0 45px #000a, 0 4px 30px #222d;
+            border-top: 8px solid #bfc6ce;
+            border-bottom: 8px solid #bfc6ce;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: ${""};
+            transition: transform 1.5s cubic-bezier(.7,0,.4,1);
+            will-change: transform;
+            /* add bolts */
+            overflow: visible;
+        }
+        .piston-half.left {
+            left: 0;
+            border-right: 4px solid #bfc6ce;
+            align-items: flex-end;
+        }
+        .piston-half.right {
+            right: 0;
+            border-left: 4px solid #bfc6ce;
+            align-items: flex-start;
+        }
+        .piston-bolts {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 80%;
+            margin: 0 8px;
+        }
+        .piston-bolt {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 60% 40%, #eee 45%, #a3b0b7 60%, #444 100%);
+            box-shadow: 0 1px 2px #2228, inset 0 2px 3px #fff7, inset 0 -2px 4px #000c;
+            border: 2px solid #7a8b93;
+            margin: 12px 0;
+        }
+        /* Reveal animation */
+        #piston-gate.revealed .piston-half.left {
+            transform: translateX(-110vw);
+        }
+        #piston-gate.revealed .piston-half.right {
+            transform: translateX(110vw);
+        }
+        /* Steam animation */
+        .steam {
+            position: absolute;
+            top: 48%;
+            left: 49.7%;
+            width: 30px; height: 30px;
+            pointer-events: none;
+            z-index: 102;
+            opacity: 0;
+            filter: blur(0.5px);
+        }
+        .steam.puff {
+            animation: steam-puff 1.4s ease-out forwards;
+        }
+        @keyframes steam-puff {
+            0%   { opacity: 0; transform: scale(0.6) translate(-12px, 0);}
+            6%   { opacity: 1; }
+            60%  { opacity: 0.8; }
+            100% { opacity: 0; transform: scale(1.24) translate(-18px, -38px);}
+        }
+        .steam2.puff {
+            animation: steam-puff2 1.7s ease-out forwards;
+        }
+        @keyframes steam-puff2 {
+            0%   { opacity: 0; transform: scale(0.45) translate(4px, 0);}
+            5%   { opacity: 1; }
+            65%  { opacity: 0.7; }
+            100% { opacity: 0; transform: scale(1.45) translate(15px, -47px);}
+        }
+        /* Gear button styles */
+        .gear-bottom {
+            position: fixed;
+            bottom: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2.7em;
+            color: #bfc6ce;
+            background: linear-gradient(120deg, #222 60%, #bfc6ce 120%);
+            padding: 0.08em 0.26em 0.12em 0.26em;
+            border-radius: 50%;
+            box-shadow: 0 6px 26px #000b, 0 1px 0 #fff2 inset;
+            z-index: 100;
+            cursor: pointer;
+            border: 2.5px solid #6f7e8a;
+            transition: box-shadow 0.2s, background 0.2s;
+            user-select: none;
+        }
+        .gear-bottom:hover,
+        .gear-bottom:focus {
+            box-shadow: 0 2px 48px #00cfff99, 0 1px 0 #fff5 inset;
+            background: linear-gradient(120deg, #1e4d61 30%, #bfc6ce 120%);
+            color: #00cfff;
+        }
+        /* Hide scroll while overlay active */
+        body.gated {
+            overflow: hidden !important;
+            height: 100vh !important;
+        }
     </style>
 </head>
-<body>
+<body class="gated">
+    <!-- Bolted metal plates -->
+    <div class="metal-plate left">
+        <div class="bolt"></div>
+        <div class="bolt"></div>
+        <div class="bolt"></div>
+        <div class="bolt"></div>
+        <div class="bolt"></div>
+    </div>
+    <div class="metal-plate right">
+        <div class="bolt"></div>
+        <div class="bolt"></div>
+        <div class="bolt"></div>
+        <div class="bolt"></div>
+        <div class="bolt"></div>
+    </div>
+    <!-- Piston Gate Overlay -->
+    <div id="piston-gate">
+        <div class="piston-half left">
+            <div class="piston-bolts">
+                <div class="piston-bolt"></div>
+                <div class="piston-bolt"></div>
+                <div class="piston-bolt"></div>
+            </div>
+        </div>
+        <div class="piston-half right">
+            <div class="piston-bolts">
+                <div class="piston-bolt"></div>
+                <div class="piston-bolt"></div>
+                <div class="piston-bolt"></div>
+            </div>
+        </div>
+        <!-- Steam puffs -->
+        <svg class="steam" id="steam1" width="30" height="30">
+            <ellipse cx="15" cy="16" rx="10" ry="10" fill="url(#steamGradA)" />
+            <defs>
+                <radialGradient id="steamGradA" cx="50%" cy="50%" r="60%">
+                    <stop offset="0%" stop-color="white" stop-opacity="0.8"/>
+                    <stop offset="100%" stop-color="#cbeeff" stop-opacity="0"/>
+                </radialGradient>
+            </defs>
+        </svg>
+        <svg class="steam steam2" id="steam2" width="30" height="30">
+            <ellipse cx="14" cy="15" rx="8" ry="8" fill="url(#steamGradB)" />
+            <defs>
+                <radialGradient id="steamGradB" cx="50%" cy="50%" r="70%">
+                    <stop offset="0%" stop-color="#fff" stop-opacity="0.7"/>
+                    <stop offset="100%" stop-color="#d7faff" stop-opacity="0"/>
+                </radialGradient>
+            </defs>
+        </svg>
+        <!-- Audio: embedded base64 steam hiss -->
+        <audio id="steam-audio" preload="auto">
+            <source src="data:audio/wav;base64,UklGRuABAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YYABAAD//wAAABgAABwAAACAgAAAgIAAAICA/4CAgP+AgID/gICA/4CAgP+AgICA/wAAAAAAAAAAAgID/wAAAAAAAgID/wAAAgID/wAAAAAAAgID/gICA/4CAgP+AgID/gICA/4CAgP+AgICA/4CAgP+AgID/gICA/4CAgP8AAACAgADgAAAgAAAAAAAgAAAgICAAIAAAAgAAAAAACAAACAgAAAgAAAAAAAgAAAgAAAAAAAgAAAgAA" type="audio/wav">
+        </audio>
+    </div>
     <h1>
         <i class="fa-solid fa-gear"></i>
         Vih-emp's Page!
@@ -124,12 +325,11 @@
     <div class="main-content">
         <h2>Projects</h2>
         <ul class="project-list">
-            <!-- Add new projects below, following the pattern -->
             <li class="project-item">
                 <a href="https://vih-emp.github.io/KHATAKHOMS" target="_blank" rel="noopener">KHATAKHOMS</a>
             </li>
             <li class="project-item">
-                <a href="https://vih-emp.github.io/ihn8n2" target="_blank" rel="noopener">ihn8n2</a>
+                <a href="https://vih-emp.github.io/ihn8n" target="_blank" rel="noopener">{broken}</a>
             </li>
             <li class="project-item">
                 <a href="https://vih-emp.github.io/scrollerapi" target="_blank" rel="noopener">scrollerapi</a>
@@ -139,26 +339,81 @@
             </li>
             <!-- Gauge Certified projects below -->
             <li class="project-item">
-                <a href="https://vih-emp.github.io/another-project" target="_blank" rel="noopener">Another Project</a>
+                <a href="https://vih-emp.github.io/hello/hello.html" target="_blank" rel="noopener">Hello!</a>
                 <span class="gauge-cert"><i class="fa-solid fa-gauge-high"></i>Gauge Certified</span>
             </li>
             <li class="project-item">
-                <a href="https://vih-emp.github.io/project-xyz" target="_blank" rel="noopener">Project XYZ</a>
+                <a href="https://vih-emp.github.io/CalcTar" target="_blank" rel="noopener">CalcTar</a>
                 <span class="gauge-cert"><i class="fa-solid fa-gauge-high"></i>Gauge Certified</span>
             </li>
             <li class="project-item">
-                <a href="https://vih-emp.github.io/coolwidget" target="_blank" rel="noopener">CoolWidget</a>
+                <a href="https://vih-emp.github.io/SpeedKernel" target="_blank" rel="noopener">SpeedKernel</a>
                 <span class="gauge-cert"><i class="fa-solid fa-gauge-high"></i>Gauge Certified</span>
             </li>
             <li class="project-item">
-                <a href="https://vih-emp.github.io/finviz" target="_blank" rel="noopener">Finviz</a>
+                <a href="https://vih-emp.github.io/ihn8n2" target="_blank" rel="noopener">IHN8N</a>
                 <span class="gauge-cert"><i class="fa-solid fa-gauge-high"></i>Gauge Certified</span>
             </li>
-            <!-- ...add more Gauge Certified projects here as needed -->
         </ul>
         <div style="margin-top:2em;">
             <p>Want your project to be Gauge Certified? <a href="#">Contact me!</a></p>
         </div>
     </div>
+    <!-- Gear bottom button -->
+    <div class="gear-bottom" tabindex="0" id="replayGear" title="Replay piston animation (reload)">
+        ⚙️
+    </div>
+    <script>
+    // Piston gate open/close logic
+    function playPistonGate() {
+        // Hide scroll
+        document.body.classList.add('gated');
+        const gate = document.getElementById('piston-gate');
+        gate.classList.remove('revealed');
+        // Reset steam
+        document.getElementById('steam1').classList.remove('puff');
+        document.getElementById('steam2').classList.remove('puff');
+        // Play: after 2.7s, hiss, after 3s, open
+        setTimeout(() => {
+            // Steam audio
+            document.getElementById('steam-audio').currentTime = 0;
+            document.getElementById('steam-audio').play();
+            // Animate steam
+            document.getElementById('steam1').classList.add('puff');
+            setTimeout(()=>{document.getElementById('steam2').classList.add('puff')},180);
+        }, 2700);
+        setTimeout(() => {
+            gate.classList.add('revealed');
+            setTimeout(()=>{
+                gate.style.display = 'none';
+                document.body.classList.remove('gated');
+            }, 1600);
+        }, 3000);
+        gate.style.display = '';
+    }
+    // On load
+    window.addEventListener('DOMContentLoaded', playPistonGate);
+    // Replay on gear click
+    document.getElementById('replayGear').addEventListener('click', () => {
+        // show gate again
+        const gate = document.getElementById('piston-gate');
+        gate.style.display = '';
+        // scroll to top for clean effect
+        window.scrollTo({top: 0, behavior: 'smooth'});
+        setTimeout(playPistonGate, 40);
+        // Gear visual spin
+        const gear = document.getElementById('replayGear');
+        gear.style.transition = "none";
+        gear.style.transform += " rotate(0deg)";
+        setTimeout(() => {
+            gear.style.transition = "transform 0.7s cubic-bezier(.4,1,.7,1)";
+            gear.style.transform += " rotate(360deg)";
+        }, 20);
+        setTimeout(() => {
+            gear.style.transition = "none";
+            gear.style.transform = "translateX(-50%)";
+        }, 800);
+    });
+    </script>
 </body>
 </html>
