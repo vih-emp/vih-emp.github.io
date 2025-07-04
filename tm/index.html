@@ -2,217 +2,224 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Turkish March</title>
+  <title>Turkish March – Extra Fancy</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- abcjs CDN for sheet music and sound -->
-  <script src="https://cdn.jsdelivr.net/npm/abcjs@6.2.2/dist/abcjs-basic-min.js"></script>
   <style>
     body {
       margin: 0;
       min-height: 100vh;
-      font-family: 'Segoe UI', Candara, 'Geneva', Verdana, sans-serif;
-      background: linear-gradient(135deg, #90e0ef 0%, #4361ee 100%);
+      font-family: 'Cedarville Cursive', 'Garamond', 'Georgia', 'Times New Roman', serif;
+      background: 
+        repeating-linear-gradient(135deg, #fbeec1 0 18px, #f1e1b0 18px 36px),
+        url('https://www.transparenttextures.com/patterns/old-mathematics.png');
+      background-color: #fbeec1;
+      color: #4b3a19;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       position: relative;
       overflow: hidden;
+      box-shadow: 0 0 120px #bfa76a inset;
     }
     h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 3em;
-      color: #fff;
-      text-shadow: 2px 2px 12px #4361ee;
-      margin: 0.5em 0 0.2em 0;
-      text-align: center;
-    }
-    #controls {
-      text-align: center;
-      margin: 1em 0;
+      font-family: 'Cedarville Cursive', 'Garamond', 'Georgia', 'Times New Roman', serif;
+      font-style: italic;
+      font-size: 2.7em;
+      color: #6d4b1a;
+      margin: 1.1em 0 0.6em 0;
+      letter-spacing: 2px;
+      text-shadow: 1px 2px 0 #e1c699, 0 0 28px #fff1;
     }
     #notation {
-      background: rgba(255,255,255,0.90);
-      border-radius: 18px;
-      padding: 2em 1em 1em 1em;
+      background: rgba(255,248,220,0.85);
+      border-radius: 22px;
+      border: 2.5px solid #bfa76a;
+      padding: 2.2em 1.5em 1.2em 1.5em;
       margin: 0 auto;
-      box-shadow: 0 8px 32px #4361ee55, 0 1.5px 8px #fff8;
-      width: min(90vw, 640px);
+      box-shadow: 0 8px 36px #c6b07d55, 0 1.5px 8px #fff8;
+      width: min(94vw, 640px);
+      font-style: italic;
+      font-size: 1.19em;
+      line-height: 1.7;
+      letter-spacing: 1px;
+      font-family: 'Cedarville Cursive', 'Garamond', 'Georgia', 'Times New Roman', serif;
     }
-    #chaos-btn {
-      background: linear-gradient(90deg, #ffd60a 0%, #ff6f3c 100%);
-      color: #222;
-      border: none;
-      border-radius: 8px;
-      padding: 0.8em 2em;
-      font-size: 1.3em;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 3px 12px #ff6f3c55;
-      margin-left: 1em;
-      transition: background 0.2s, transform 0.2s;
-    }
-    #chaos-btn.active {
-      background: linear-gradient(90deg, #f72585 0%, #b5179e 100%);
-      color: #fff;
-      transform: scale(1.09) rotate(-2deg);
-      box-shadow: 0 6px 24px #f7258555;
-    }
-    #play-btn {
-      background: linear-gradient(90deg, #00b4d8 0%, #48cae4 100%);
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      padding: 0.8em 2em;
-      font-size: 1.3em;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 3px 12px #48cae455;
-      margin-right: 1em;
-      transition: background 0.2s, transform 0.2s;
-    }
-    #play-btn:active {
-      background: linear-gradient(90deg, #4361ee 0%, #48cae4 100%);
-      transform: scale(1.03) rotate(1deg);
+    .signature {
+      position: fixed;
+      bottom: 30px;
+      right: 32px;
+      font-family: 'Cedarville Cursive', 'Garamond', 'Georgia', 'Times New Roman', serif;
+      font-style: italic;
+      font-size: 1.2em;
+      color: #7c6332cc;
+      opacity: 0.84;
+      pointer-events: none;
+      letter-spacing: 1.5px;
+      text-align: right;
+      user-select: none;
     }
     /* Flying notes styling */
     .note {
-      font-size: 2.2em;
-      color: #ffbe0b;
+      font-size: 2.9em;
+      opacity: 0.5;
       position: fixed;
       pointer-events: none;
-      z-index: 1000;
-      opacity: 0.76;
-      animation: fly-note 5s linear infinite;
-      filter: drop-shadow(0 2px 8px #ffbe0bcc);
+      z-index: 100;
+      animation: bounce-notes 6.7s cubic-bezier(0.36,0.07,0.19,0.97) infinite;
+      filter: drop-shadow(0 2px 8px #fff3);
       user-select: none;
       will-change: transform, opacity;
+      font-family: serif;
+      color: #a67c37;
+      text-shadow: 0 0 8px #fff5, 0 0 24px #d9a44122;
     }
-    .note2 { color: #7209b7; }
-    .note3 { color: #3a86ff; }
-    .note4 { color: #ff006e; }
-    .note5 { color: #43aa8b; }
-    .note6 { color: #fb5607; }
-    @keyframes fly-note {
+    .note2 { color: #bc8f5d; }
+    .note3 { color: #96713a; }
+    .note4 { color: #d9a441; }
+    .note5 { color: #bfa76a; }
+    .note6 { color: #c6b07d; }
+
+    @keyframes bounce-notes {
       0% {
-        transform: translateY(100vh) scale(0.7) rotate(-30deg);
-        opacity: 0.82;
+        transform: translateY(100vh) scale(0.8) rotate(-10deg);
+        opacity: 0.51;
       }
-      40% {
-        opacity: 1;
+      15% {
+        opacity: 0.85;
+      }
+      35% {
+        transform: translateY(45vh) scale(1.2) rotate(21deg);
+        opacity: 0.6;
+      }
+      60% {
+        transform: translateY(7vh) scale(0.93) rotate(-17deg);
+        opacity: 0.38;
+      }
+      80% {
+        transform: translateY(20vh) scale(1.1) rotate(7deg);
+        opacity: 0.6;
       }
       100% {
-        transform: translateY(-15vh) scale(1.15) rotate(30deg);
+        transform: translateY(100vh) scale(1.1) rotate(10deg);
         opacity: 0.1;
       }
     }
-    /* Glow effect for fancy! */
-    .glow {
-      text-shadow:
-        0 0 8px #fff, 
-        0 0 18px #ffd60a, 
-        0 0 36px #ff6f3c;
+    #audio-player-wrap {
+      margin: 2em;
+      text-align: center;
     }
-    /* Responsive tweaks */
+    #play-audio-btn {
+      font-family: 'Cedarville Cursive', serif;
+      font-size:1.3em;
+      background:#fbeec1;
+      color:#7c6332;
+      border:2px solid #bfa76a;
+      border-radius:8px;
+      padding:0.5em 2em;
+      cursor:pointer;
+      box-shadow: 0 2px 12px #bfa76a55;
+      margin-bottom: 1em;
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+    }
+    #play-audio-btn:hover {
+      background: #f1e1b0;
+      color: #a67c37;
+      transform: scale(1.04);
+    }
     @media (max-width: 600px) {
-      h1 { font-size: 2em; }
+      h1 { font-size: 1.5em; }
       #notation { padding: 1em 0.5em 0.5em 0.5em; }
+      .signature { font-size: 1em; bottom: 15px; right: 10px;}
+      #audio-player-wrap { margin: 1em; }
     }
   </style>
+  <!-- Handwriting font for signature & heading -->
+  <link href="https://fonts.googleapis.com/css2?family=Cedarville+Cursive&display=swap" rel="stylesheet">
 </head>
 <body>
-  <h1 class="glow">🎹 Turkish March <span style="font-size:0.7em;">(Mozart)</span></h1>
-  <div id="controls">
-    <button id="play-btn">▶️ Play</button>
-    <button id="chaos-btn">CHAOS Mode</button>
+  <h1>🎼 Turkish March <span style="font-size:0.6em;">(Mozart)</span></h1>
+  
+  <div id="audio-player-wrap">
+    <button id="play-audio-btn">🎶 Play Music</button>
+    <audio id="audio-player" style="display:none;">
+      <!-- Replace the src value below with your desired music file! -->
+      <source src="turkish-march.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+    <div style="font-style:italic;font-size:0.95em;color:#aa8844bb;margin-top:0.6em;">(Music will play on button click. <br>Replace the <code>src</code> in the code with your own audio file if needed.)</div>
   </div>
-  <div id="notation"></div>
-
+  
+  <div id="notation">
+    <p>
+      <em>
+        This delightful rondo, composed by W.A. Mozart in the late 18th century, is renowned for its lively tempo and whimsical character. Imagine a candlelit salon, parchment scores, and the gentle resonance of a fortepiano as you peruse this page.
+      </em>
+    </p>
+    <ul style="margin-left:1.4em;font-style:italic;">
+      <li>Let the rhythm of the 1700s sweep you away.</li>
+      <li>Close your eyes, and you might just hear the music in your mind's ear.</li>
+      <li style="opacity:0.7;">The notes dance as they did centuries ago, on parchment and in the air.</li>
+    </ul>
+  </div>
+  <div class="signature">
+    Made with <span style="font-size:1.1em;">𝄞</span> and <span style="font-size:1.1em;">𝄢</span> by vih-emp
+  </div>
   <script>
-    // The Turkish March in ABC notation
-    const abc = `
-X:1
-T:Turkish March (Rondo Alla Turca)
-C:W.A. Mozart
-M:2/4
-L:1/8
-Q:1/4=120
-K:A
-|: E2 E2 E2 C2 | E2 G2 G,2 z2 |
-   C2 G,2 E,2 A,2 | B,2 ^A,2 B,2 z2 |
-   E2 ^G,2 B,2 C2 | E2 A,2 z2 z2 :|
-`;
-
-    // Render ABC notation
-    ABCJS.renderAbc("notation", abc, { responsive: "resize" });
-
-    // Sound playback
-    let synthControl = null;
-    document.getElementById('play-btn').onclick = async function () {
-      if (synthControl) {
-        synthControl.pause();
+    // Audio player logic
+    const audioEl = document.getElementById('audio-player');
+    const btn = document.getElementById('play-audio-btn');
+    let playing = false;
+    btn.onclick = function() {
+      if (!playing) {
+        audioEl.play();
+        btn.textContent = "⏸ Pause Music";
+      } else {
+        audioEl.pause();
+        btn.textContent = "🎶 Play Music";
       }
-      synthControl = new ABCJS.synth.SynthController();
-      synthControl.load("#notation", {}, { displayRestart: false, displayPlay: false, displayProgress: false });
-      let synth = new ABCJS.synth.CreateSynth();
-      await synth.init({ visualObj: ABCJS.renderAbc("notation", abc)[0] });
-      synthControl.setTune(ABCJS.renderAbc("notation", abc)[0], false).then(() => {
-        synthControl.play();
-      });
+      playing = !playing;
     };
+    audioEl.onended = function() {
+      playing = false;
+      btn.textContent = "🎶 Play Music";
+    }
+    audioEl.onpause = function() {
+      playing = false;
+      btn.textContent = "🎶 Play Music";
+    }
+    audioEl.onplay = function() {
+      playing = true;
+      btn.textContent = "⏸ Pause Music";
+    }
 
-    // Flying notes
+    // Emojis to use as flying notes
     const notes = [
-      '🎵','🎶','𝄞','♬','♩','♫','𝄫','𝄡','♩','♭','𝄪','♯','𝄢',
+      '🎵','🎶','𝄞','𝄢','♩','♬','𝄡','♭','𝄪','♯'
     ];
     const noteClasses = ['note','note2','note3','note4','note5','note6'];
-    let chaos = false;
-    let chaosInterval = null;
-    let normalNotesActive = true;
-    let chaosNotes = [];
 
     function randomInt(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    function spawnNote(isChaos=false) {
+    function spawnNote() {
       const noteEl = document.createElement('div');
       noteEl.className = noteClasses[randomInt(0, noteClasses.length-1)] + ' note';
       noteEl.innerText = notes[randomInt(0, notes.length-1)];
-      noteEl.style.left = randomInt(2, 96) + 'vw';
-      noteEl.style.fontSize = (isChaos ? randomInt(1, 3) : randomInt(2, 4)) + 'em';
-      noteEl.style.animationDuration = (isChaos ? randomInt(2, 5) : randomInt(4, 8)) + 's';
+      noteEl.style.left = randomInt(2, 92) + 'vw';
+      noteEl.style.fontSize = randomInt(2, 3) + 'em';
+      noteEl.style.animationDuration = (randomInt(52, 90) / 10) + 's';
       noteEl.style.top = '100vh';
       document.body.appendChild(noteEl);
-      setTimeout(() => noteEl.remove(), isChaos ? 5000 : 9000);
-      if(isChaos) chaosNotes.push(noteEl);
+      setTimeout(() => noteEl.remove(), 9000);
     }
 
-    // Normal mode: gentle flying notes
-    function gentleNotesLoop() {
-      if (!chaos) {
-        spawnNote();
-        setTimeout(gentleNotesLoop, randomInt(700, 1700));
-      }
+    // Bounce notes up and down gently and perpetually
+    function notesLoop() {
+      spawnNote();
+      setTimeout(notesLoop, randomInt(600, 1400));
     }
-    gentleNotesLoop();
-
-    // CHAOS mode
-    document.getElementById('chaos-btn').onclick = function() {
-      chaos = !chaos;
-      this.classList.toggle('active', chaos);
-      this.textContent = chaos ? 'CHAOS Mode: ON' : 'CHAOS Mode';
-      if (chaos) {
-        // Spawn 100+ notes rapidly and continuously
-        for (let i=0; i<100; ++i) {
-          setTimeout(() => spawnNote(true), randomInt(0, 1200));
-        }
-        chaosInterval = setInterval(() => {
-          for (let i=0; i<12; i++) spawnNote(true);
-        }, 350);
-      } else {
-        if (chaosInterval) clearInterval(chaosInterval);
-        chaosNotes.forEach(el => el.remove());
-        chaosNotes = [];
-        gentleNotesLoop();
-      }
-    };
+    notesLoop();
   </script>
 </body>
 </html>
