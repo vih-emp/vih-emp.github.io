@@ -104,32 +104,10 @@
         opacity: 0.1;
       }
     }
-    #audio-player-wrap {
-      margin: 2em;
-      text-align: center;
-    }
-    #play-audio-btn {
-      font-family: 'Cedarville Cursive', serif;
-      font-size:1.3em;
-      background:#fbeec1;
-      color:#7c6332;
-      border:2px solid #bfa76a;
-      border-radius:8px;
-      padding:0.5em 2em;
-      cursor:pointer;
-      box-shadow: 0 2px 12px #bfa76a55;
-      margin-bottom: 1em;
-      transition: background 0.2s, color 0.2s, transform 0.2s;
-    }
-    #play-audio-btn:hover {
-      background: #f1e1b0;
-      color: #a67c37;
-      transform: scale(1.04);
-    }
     .sound-btn {
-      margin: 10px;
-      padding: 20px;
-      font-size: 18px;
+      margin: 2em 0 1em 0;
+      padding: 18px 30px;
+      font-size: 1.25em;
       cursor: pointer;
       font-family: 'Cedarville Cursive', serif;
       background:#fbeec1;
@@ -138,6 +116,7 @@
       border-radius:8px;
       box-shadow: 0 2px 12px #bfa76a55;
       transition: background 0.2s, color 0.2s, transform 0.2s;
+      display: block;
     }
     .sound-btn:hover {
       background: #f1e1b0;
@@ -148,7 +127,6 @@
       h1 { font-size: 1.5em; }
       #notation { padding: 1em 0.5em 0.5em 0.5em; }
       .signature { font-size: 1em; bottom: 15px; right: 10px;}
-      #audio-player-wrap { margin: 1em; }
     }
   </style>
   <!-- Handwriting font for signature & heading -->
@@ -157,20 +135,7 @@
 <body>
   <h1>🎼 Turkish March <span style="font-size:0.6em;">(Mozart)</span></h1>
   
-  <div id="audio-player-wrap">
-    <button id="play-audio-btn">🎶 Play Music</button>
-    <audio id="audio-player" style="display:none;">
-      <!-- Replace the src value below with your desired music file! -->
-      <source src="turkish-march.mp3" type="audio/mpeg">
-      Your browser does not support the audio element.
-    </audio>
-    <div style="font-style:italic;font-size:0.95em;color:#aa8844bb;margin-top:0.6em;">(Music will play on button click. <br>Replace the <code>src</code> in the code with your own audio file if needed.)</div>
-  </div>
-
-  <div style="margin-bottom: 1.5em;">
-    <button class="sound-btn" onclick="playMozart()">✨ Play Mozart with Oscillator</button>
-    <span style="font-style:italic;font-size:0.95em;color:#aa8844bb;">(Synthesized - browser only!)</span>
-  </div>
+  <button class="sound-btn" onclick="playMozart()">✨ Play Mozart (Oscillator)</button>
   
   <div id="notation">
     <p>
@@ -188,33 +153,6 @@
     Made with <span style="font-size:1.1em;">𝄞</span> and <span style="font-size:1.1em;">𝄢</span> by vih-emp
   </div>
   <script>
-    // Audio player logic
-    const audioEl = document.getElementById('audio-player');
-    const btn = document.getElementById('play-audio-btn');
-    let playing = false;
-    btn.onclick = function() {
-      if (!playing) {
-        audioEl.play();
-        btn.textContent = "⏸ Pause Music";
-      } else {
-        audioEl.pause();
-        btn.textContent = "🎶 Play Music";
-      }
-      playing = !playing;
-    };
-    audioEl.onended = function() {
-      playing = false;
-      btn.textContent = "🎶 Play Music";
-    }
-    audioEl.onpause = function() {
-      playing = false;
-      btn.textContent = "🎶 Play Music";
-    }
-    audioEl.onplay = function() {
-      playing = true;
-      btn.textContent = "⏸ Pause Music";
-    }
-
     // Emojis to use as flying notes
     const notes = [
       '🎵','🎶','𝄞','𝄢','♩','♬','𝄡','♭','𝄪','♯'
@@ -295,7 +233,7 @@
       setTimeout(() => {
         if (btnMozart) {
           btnMozart.disabled = false;
-          btnMozart.textContent = "✨ Play Mozart with Oscillator";
+          btnMozart.textContent = "✨ Play Mozart (Oscillator)";
         }
       }, (now - ctx.currentTime) * 1000 + 100);
     }
