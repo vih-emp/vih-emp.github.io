@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>IHN8N - Pastel Matrix Joke Display</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css?family=Orbitron:700|Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      font-family: 'Share Tech Mono', 'Orbitron', monospace, sans-serif;
+      background: linear-gradient(135deg, #b0ffb3 70%, #fce1ff 100%);
+    }
+    #matrix-canvas {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .max-bg {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .hr-title {
+      font-size: 4.5rem;
+      font-family: 'Orbitron', 'Share Tech Mono', monospace, sans-serif;
+      color: #abffe1;
+      text-shadow:
+        0 0 16px #77ffd6,
+        0 0 32px #fff,
+        0 0 4px #ffb2eb;
+      letter-spacing: 0.3em;
+      margin-bottom: 2rem;
+      filter: contrast(130%) brightness(120%);
+      animation: pastel-glitch 2s infinite;
+      z-index: 1;
+      user-select: none;
+    }
+    @keyframes pastel-glitch {
+      0% { text-shadow: 2px 2px 0 #ffb2eb, 2px -2px 0 #b0ffb3; }
+      20% { text-shadow: -2px 2px 0 #b0ffb3, 2px 2px 0 #bbf7f7; }
+      40% { text-shadow: 2px -2px 0 #ffb2eb, -2px -2px 0 #bbf7f7; }
+      60% { text-shadow: -2px 2px 0 #bbf7f7, 2px -2px 0 #fce1ff; }
+      80% { text-shadow: 2px 2px 0 #fce1ff, -2px 2px 0 #abffe1; }
+      100% { text-shadow: 2px 2px 0 #ffb2eb, 2px -2px 0 #b0ffb3; }
+    }
+    .max-footer {
+      position: absolute;
+      bottom: 2vw;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      font-size: 1.2rem;
+      color: #b0ffb3;
+      text-shadow: 0 0 6px #fff, 0 0 16px #bbf7f7;
+      text-align: center;
+      opacity: 0.85;
+      font-family: 'Share Tech Mono', monospace;
+      pointer-events: none;
+      z-index: 2;
+      user-select: none;
+    }
+    .popup-outer {
+      position: fixed;
+      top: 18vh;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1002;
+      background: none;
+      animation: popup-float 0.5s cubic-bezier(0.4, 1.4, 0.7, 1) forwards;
+      user-select: none;
+    }
+    @keyframes popup-float {
+      0% { opacity: 0; transform: translateX(-50%) scale(0.8);}
+      60% { opacity: 1; transform: translateX(-50%) scale(1.06);}
+      100% { opacity: 1; transform: translateX(-50%) scale(1);}
+    }
+    .popup-inner {
+      background: rgba(255,255,255,0.94);
+      border: 3px solid #bbf7f7;
+      border-radius: 24px;
+      box-shadow: 0 0 32px 10px #b0ffb388, 0 0 2px #fff;
+      padding: 2.5rem 2.2rem 1.2rem 2.2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 350px;
+      max-width: 90vw;
+      color: #2e4b40;
+      font-family: 'Share Tech Mono', 'Orbitron', monospace;
+      font-size: 1.24rem;
+      cursor: pointer;
+      transition: border-color 0.25s, box-shadow 0.25s;
+      user-select: none;
+    }
+    .popup-setup {
+      font-size: 1.09rem;
+      opacity: 0.84;
+      margin-bottom: 0.8rem;
+      text-align: center;
+      letter-spacing: 0.01em;
+    }
+    .popup-punchline {
+      font-size: 1.18rem;
+      margin-bottom: 1.1rem;
+      text-align: center;
+      filter: contrast(1.1);
+    }
+    .max-highlight {
+      font-size: 1.28em;
+      font-family: 'Orbitron', 'Share Tech Mono', monospace;
+      color: #ffb2eb !important;
+      text-shadow: 0 0 16px #ffb2eb, 0 0 2px #fff;
+      animation: highlight-glitch 0.7s infinite;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+    }
+    @keyframes highlight-glitch {
+      0% { filter: blur(0.5px) brightness(1.2); }
+      50% { filter: blur(2.5px) brightness(1.5); }
+      100% { filter: blur(0.5px) brightness(1.2); }
+    }
+    .popup-definition-header {
+      font-size: 1.5rem;
+      color: #bbf7f7;
+      margin-bottom: 0.6rem;
+      font-family: 'Orbitron', 'Share Tech Mono', monospace;
+      text-shadow: 0 0 12px #bbf7f7, 0 0 2px #fff;
+      letter-spacing: 0.08em;
+    }
+    .popup-definition {
+      font-size: 1.1rem;
+      margin-bottom: 1.1rem;
+      text-align: center;
+      color: #bbf7f7;
+      text-shadow: 0 0 4px #fff, 0 0 12px #b0ffb3;
+      font-weight: 500;
+    }
+    .popup-note {
+      font-size: 0.99rem;
+      color: #ffd6fa;
+      opacity: 0.74;
+      margin-top: 0.2rem;
+      text-align: center;
+      font-family: 'Share Tech Mono', monospace;
+    }
+    /* Glitch bar */
+    #glitch-bar {
+      position: fixed;
+      z-index: 1001;
+      pointer-events: none;
+      border-radius: 6px;
+      opacity: 0.74;
+      filter: blur(0.6px) contrast(1.5);
+      transition: all 0.26s cubic-bezier(0.5,1.7,0.6,1.05);
+    }
+  </style>
+</head>
+<body>
+  <canvas id="matrix-canvas"></canvas>
+  <div class="max-bg">
+    <div class="hr-title">I H N 8 N</div>
+    <div class="max-footer">
+      Press any letter key for a joke.<br>
+      Click the popup for a definition, click again to dismiss.
+    </div>
+  </div>
+  <div id="popup-root"></div>
+  <div id="glitch-bar"></div>
+<script>
+  // -- Matrix background --
+  const pastelMatrixColors = [
+    "#b0ffb3", "#fce1ff", "#bbf7f7", "#ffd6fa", "#ffb2eb", "#abffe1", "#e7f2ef"
+  ];
+  function getPastel() {
+    return pastelMatrixColors[Math.floor(Math.random() * pastelMatrixColors.length)];
+  }
+  function startMatrix() {
+    const canvas = document.getElementById('matrix-canvas');
+    const ctx = canvas.getContext('2d');
+    let width = window.innerWidth, height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+    let fontSize = 22;
+    let columns = Math.floor(width / fontSize);
+    let drops = Array(columns).fill(1);
+
+    function draw() {
+      ctx.fillStyle = "rgba(240,240,255,0.18)";
+      ctx.fillRect(0, 0, width, height);
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = String.fromCharCode(0x30A0 + Math.random() * 96);
+        ctx.font = fontSize + "px 'Share Tech Mono', monospace";
+        ctx.fillStyle = getPastel();
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize + Math.random() * 3);
+        if (drops[i] * fontSize > height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
+    window.addEventListener('resize', () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+      columns = Math.floor(width / fontSize);
+      drops = Array(columns).fill(1);
+    });
+  }
+  startMatrix();
+
+  // -- Glitch bar --
+  const pastelBars = [
+    "#fce1ff", "#bbf7f7", "#ffd6fa", "#ffb2eb", "#b0ffb3", "#abffe1"
+  ];
+  function randomBarStyle() {
+    const isVertical = Math.random() > 0.5;
+    const length = isVertical
+      ? `${20 + Math.random() * 60}%`
+      : `${80 + Math.random() * 100}px`;
+    const thickness = isVertical
+      ? `${3 + Math.random() * 7}px`
+      : `${5 + Math.random() * 15}px`;
+    const color = pastelBars[Math.floor(Math.random() * pastelBars.length)];
+    return {
+      isVertical,
+      length,
+      thickness,
+      color,
+      blur: `${2 + Math.random() * 10}px`,
+      top: `${Math.random() * 85}%`,
+      left: `${Math.random() * 85}%`
+    };
+  }
+  function startGlitchBar() {
+    const bar = document.getElementById('glitch-bar');
+    function updateBar() {
+      const style = randomBarStyle();
+      bar.style.top = style.top;
+      bar.style.left = style.left;
+      bar.style.width = style.isVertical ? style.thickness : style.length;
+      bar.style.height = style.isVertical ? style.length : style.thickness;
+      bar.style.background = style.color;
+      bar.style.boxShadow = `0 0 ${style.blur} ${style.color}, 0 0 12px #fff5`;
+    }
+    setInterval(updateBar, 600 + Math.random() * 1200);
+    updateBar();
+  }
+  startGlitchBar();
+
+  // -- Jokes --
+  const jokes = {
+    a: {
+      setup: "Why did the computer get kicked out of art class?",
+      punchline: "Because it had no sense of *aesthetics*.",
+      highlighted: "aesthetics",
+      definition: "Aesthetics: a set of principles concerned with the nature and appreciation of beauty.",
+    },
+    b: {
+      setup: "Why did the bot refuse to sleep?",
+      punchline: "It was afraid of *bugs* crawling in the night.",
+      highlighted: "bugs",
+      definition: "Bugs: errors or flaws in software or hardware.",
+    },
+    c: {
+      setup: "Why did the code stay up all night?",
+      punchline: "Because it couldn't escape the *corruption* within.",
+      highlighted: "corruption",
+      definition: "Corruption: when data is altered from its original state, often making it unusable.",
+    },
+    d: {
+      setup: "Why did the developer fear the dark?",
+      punchline: "Because of lurking *daemons* watching the code.",
+      highlighted: "daemons",
+      definition: "Daemon: a background computer process that runs without direct user control.",
+    },
+    e: {
+      setup: "Why did the email get nervous?",
+      punchline: "It was marked as an *exploit*.",
+      highlighted: "exploit",
+      definition: "Exploit: a piece of code that takes advantage of a bug or vulnerability.",
+    },
+    f: {
+      setup: "Why did the computer never laugh?",
+      punchline: "It had a *fatal* sense of humor.",
+      highlighted: "fatal",
+      definition: "Fatal: causing a program or system to stop completely.",
+    },
+    g: {
+      setup: "Why did the ghost visit the server?",
+      punchline: "To haunt the *gateway*.",
+      highlighted: "gateway",
+      definition: "Gateway: a device that connects two different networks.",
+    },
+    h: {
+      setup: "Why did the hacker stay quiet?",
+      punchline: "He feared the *honeypot*.",
+      highlighted: "honeypot",
+      definition: "Honeypot: a security resource set up to be probed and attacked.",
+    },
+    i: {
+      setup: "Why did the AI look in the mirror?",
+      punchline: "To check its *identity*.",
+      highlighted: "identity",
+      definition: "Identity: the distinct personality of an individual or system.",
+    },
+    j: {
+      setup: "Why did the JavaScript run away?",
+      punchline: "It was afraid of the *jitter* in the network.",
+      highlighted: "jitter",
+      definition: "Jitter: variation in packet arrival time, often causing network issues.",
+    },
+    k: {
+      setup: "Why did the keyboard panic?",
+      punchline: "It pressed the wrong *kernel*.",
+      highlighted: "kernel",
+      definition: "Kernel: the core part of an operating system.",
+    },
+    l: {
+      setup: "Why did the laptop tell a scary story?",
+      punchline: "To give you a *lag* in your step.",
+      highlighted: "lag",
+      definition: "Lag: noticeable delay between action and response.",
+    },
+    m: {
+      setup: "Why did the mainframe whisper?",
+      punchline: "It feared the *malware* listening.",
+      highlighted: "malware",
+      definition: "Malware: malicious software designed to cause harm.",
+    },
+    n: {
+      setup: "Why did the network shiver?",
+      punchline: "It detected an *anomaly* in the noise.",
+      highlighted: "anomaly",
+      definition: "Anomaly: something that deviates from what is standard or expected.",
+    },
+    o: {
+      setup: "Why did the OS hide under the desk?",
+      punchline: "It saw an *overflow* coming.",
+      highlighted: "overflow",
+      definition: "Overflow: when data exceeds storage capacity, leading to errors.",
+    },
+    p: {
+      setup: "Why did the printer scream?",
+      punchline: "It ran out of *paper* in the middle of the night.",
+      highlighted: "paper",
+      definition: "Paper: what printers eat for breakfast, sometimes in nightmares.",
+    },
+    q: {
+      setup: "Why did the query go insane?",
+      punchline: "It was lost in the *queue* forever.",
+      highlighted: "queue",
+      definition: "Queue: a list in which entries are processed in order.",
+    },
+    r: {
+      setup: "Why did the robot feel lonely?",
+      punchline: "It missed its *root* access.",
+      highlighted: "root",
+      definition: "Root: the top-level user or directory in a system.",
+    },
+    s: {
+      setup: "Why did the server blush?",
+      punchline: "It was exposed to a *scan*.",
+      highlighted: "scan",
+      definition: "Scan: a process of examining a system for information or vulnerabilities.",
+    },
+    t: {
+      setup: "Why did the terminal curse?",
+      punchline: "It saw a *timeout* in its future.",
+      highlighted: "timeout",
+      definition: "Timeout: when a process stops after waiting too long for a response.",
+    },
+    u: {
+      setup: "Why did the USB tremble?",
+      punchline: "It feared an *unauthorized* connection.",
+      highlighted: "unauthorized",
+      definition: "Unauthorized: not having official permission or approval.",
+    },
+    v: {
+      setup: "Why did the virus grin?",
+      punchline: "It found a new *vulnerability*.",
+      highlighted: "vulnerability",
+      definition: "Vulnerability: a weakness that can be exploited.",
+    },
+    w: {
+      setup: "Why did the website cry for help?",
+      punchline: "It was caught in a *wormhole*.",
+      highlighted: "wormhole",
+      definition: "Wormhole: a hypothetical shortcut or glitch, also a type of malware.",
+    },
+    x: {
+      setup: "Why did the X-ray scan the hard drive?",
+      punchline: "It wanted to see the *xenomorphs* inside.",
+      highlighted: "xenomorphs",
+      definition: "Xenomorph: an alien form, or something completely foreign.",
+    },
+    y: {
+      setup: "Why did the YAML file scream?",
+      punchline: "It was haunted by a *yeti* in the indents.",
+      highlighted: "yeti",
+      definition: "Yeti: a mythical creature, or an unexpected, mysterious error.",
+    },
+    z: {
+      setup: "Why did the zombie process moan?",
+      punchline: "It was stuck in an endless *z-loop*.",
+      highlighted: "z-loop",
+      definition: "Z-loop: an infinite loop, or a process that never properly terminates.",
+    }
+  };
+
+  // -- Popup logic --
+  const pastelColors = [
+    "#b0ffb3", "#bbf7f7", "#ffd6fa", "#ffb2eb", "#abffe1"
+  ];
+  function randomPastelColor() {
+    return pastelColors[Math.floor(Math.random() * pastelColors.length)];
+  }
+  function glitchTTS(text) {
+    if ('speechSynthesis' in window) {
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.rate = 0.7 + Math.random() * 0.2;
+      utter.pitch = 0.3 + Math.random() * 0.3;
+      utter.volume = 1;
+      let found = false;
+      try {
+        speechSynthesis.getVoices().forEach(v => {
+          if (
+            v.name.toLowerCase().includes("zarvox") ||
+            v.name.toLowerCase().includes("trinoids")
+          ) {
+            utter.voice = v;
+            found = true;
+          }
+        });
+      } catch {}
+      window.speechSynthesis.speak(utter);
+    }
+  }
+  let popupState = {
+    shown: false,
+    joke: null,
+    showDefinition: false,
+    highlightColor: "#b0ffb3"
+  };
+  function highlightWord(text, word, color) {
+    const re = new RegExp(`\\*${word}\\*`, "i");
+    return text.replace(re, `<span class="max-highlight" style="color:${color};">${word}</span>`);
+  }
+  function showPopup(joke, highlightColor) {
+    const root = document.getElementById("popup-root");
+    root.innerHTML = `
+      <div class="popup-outer" id="popup-outer">
+        <div class="popup-inner" style="border-color:${highlightColor}">
+          <div class="popup-setup">${joke.setup}</div>
+          <div class="popup-punchline">${highlightWord(joke.punchline, joke.highlighted, highlightColor)}</div>
+          <div class="popup-note">(Click for definition)</div>
+        </div>
+      </div>
+    `;
+    document.getElementById("popup-outer").onclick = showDefinition;
+    popupState.shown = true;
+    popupState.joke = joke;
+    popupState.showDefinition = false;
+    popupState.highlightColor = highlightColor;
+  }
+  function showDefinition() {
+    if (!popupState.shown || !popupState.joke) return;
+    const root = document.getElementById("popup-root");
+    root.innerHTML = `
+      <div class="popup-outer" id="popup-outer">
+        <div class="popup-inner" style="border-color:${popupState.highlightColor}">
+          <div class="popup-definition-header">${popupState.joke.highlighted.charAt(0).toUpperCase() + popupState.joke.highlighted.slice(1)}</div>
+          <div class="popup-definition">${popupState.joke.definition}</div>
+          <div class="popup-note">(Click to close)</div>
+        </div>
+      </div>
+    `;
+    document.getElementById("popup-outer").onclick = hidePopup;
+    popupState.showDefinition = true;
+    glitchTTS(popupState.joke.definition);
+  }
+  function hidePopup() {
+    document.getElementById("popup-root").innerHTML = "";
+    popupState.shown = false;
+    popupState.joke = null;
+    popupState.showDefinition = false;
+  }
+  document.addEventListener("keydown", function(e) {
+    if (popupState.shown) return;
+    const letter = e.key.toLowerCase();
+    if (!/^[a-z]$/.test(letter)) return;
+    const joke = jokes[letter];
+    if (joke) {
+      const color = randomPastelColor();
+      showPopup(joke, color);
+      glitchTTS(`${letter.toUpperCase()} - ${joke.setup} ${joke.punchline.replace(/\*([^\*]+)\*/, '$1')}`);
+    }
+  });
+
+</script>
+</body>
+</html>
