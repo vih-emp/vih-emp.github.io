@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Castle Town - Deltarune (Full Song with Oscillator)</title>
+  <style>
+    body { background: #24243e; color: #fff; font-family: 'Segoe UI', sans-serif; text-align: center; }
+    h1 { margin-top: 1em; font-size: 2em; }
+    button { background: #7b8fd2; color: #fff; font-size: 1.3em; padding: 1em 2em; border: none; border-radius: 10px; margin: 2em 0 1em 0; cursor: pointer; }
+    #chord { font-size: 2em; margin: 1em 0;}
+    #melody { font-size: 1.3em; color: #ffe066; margin-bottom: 1em;}
+    small { color: #bbb; }
+  </style>
+</head>
+<body>
+  <h1>My Castle Town (Full Song)</h1>
+  <div id="chord"></div>
+  <div id="melody"></div>
+  <button id="play">Play Song</button>
+  <div>
+    <small>By Toby Fox – Synthesized with Web Audio OscillatorNode<br>
+    Chords and melody arranged for browser playback</small>
+  </div>
+<script>
+const NOTE_FREQ = {
+  'Bb4': 466.16, 'C5': 523.25, 'D5': 587.33, 'Eb5': 622.25, 'F5': 698.46, 'G5': 783.99, 'A5': 880.00,
+  'Bb5': 932.33, 'C6': 1046.50, 'D6': 1174.66, 'Eb6': 1244.51, 'F6': 1396.91, 'G6': 1567.98, 'A6': 1760.00,
+  'Bb3': 233.08, 'C4': 261.63, 'D4': 293.66, 'Eb4': 311.13, 'F4': 349.23, 'G4': 392.00, 'A4': 440.00,
+  'Bb2': 116.54, 'C3': 130.81, 'D3': 146.83, 'Eb3': 155.56, 'F3': 174.61, 'G3': 196.00, 'A3': 220.00
+};
+// Chord definitions (root position + 7th, left hand range)
+const CHORDS = {
+  'Bbmaj7': ['Bb3', 'D4', 'F4', 'A4'],
+  'Dm7':    ['D3', 'F3', 'A3', 'C4'],
+  'Gm7':    ['G3', 'Bb3', 'D4', 'F4'],
+  'Ebmaj7': ['Eb3', 'G3', 'Bb3', 'D4'],
+  'Cm7':    ['C3', 'Eb3', 'G3', 'Bb3'],
+  'F7':     ['F3', 'A3', 'C4', 'Eb4']
+};
+// Main progression (measures), follows the original structure
+const chordProgression = [
+  // Main theme (x2)
+  'Bbmaj7','Dm7','Gm7','Ebmaj7',
+  'Bbmaj7','Dm7','Gm7','Ebmaj7',
+  'Cm7','F7','Bbmaj7','Ebmaj7',
+  'Cm7','F7','Bbmaj7','Bbmaj7',
+  // Bridge/variation (x2)
+  'Ebmaj7','Dm7','Gm7','Cm7',
+  'Ebmaj7','Dm7','Gm7','Cm7',
+  'Cm7','F7','Bbmaj7','Ebmaj7',
+  'Cm7','F7','Bbmaj7','Bbmaj7',
+  // Repeat main theme (x1)
+  'Bbmaj7','Dm7','Gm7','Ebmaj7',
+  'Bbmaj7','Dm7','Gm7','Ebmaj7',
+  'Cm7','F7','Bbmaj7','Ebmaj7',
+  'Cm7','F7','Bbmaj7','Bbmaj7'
+];
+
+// Melody for the main theme (approximation, fits above chords, in quarter notes; add rests as null)
+const melody = [
+  // Bbmaj7
+  'F5','D5','C5','D5',   // Bbmaj7
+  'F5','D5','C5','D5',   // Dm7
+  'G5','F5','D5','C5',   // Gm7
+  'F5','Eb5','D5','C5',  // Ebmaj7
+  // repeat
+  'F5','D5','C5','D5',
+  'F5','D5','C5','D5',
+  'G5','F5','D5','C5',
+  'F5','Eb5','D5','C5',
+  // Cm7
+  'Eb5','F5','G5','A5',  // Cm7
+  'G5','F5','Eb5','D5',  // F7
+  'F5','D5','C5','D5',   // Bbmaj7
+  'F5','Eb5','D5','C5',  // Ebmaj7
+  'Eb5','F5','G5','A5',  // Cm7
+  'G5','F5','Eb5','D5',  // F7
+  'F5','D5','C5','D5',   // Bbmaj7
+  'F5','D5','Bb4','-',   // Bbmaj7 (hold)
+  // bridge/variation (simpler, more chordal)
+  'G5','F5','D5','C5',   // Ebmaj7
+  'F5','D5','C5','D5',   // Dm7
+  'G5','F5','D5','C5',   // Gm7
+  'F5','Eb5','D5','-',   // Cm7
+  'Eb5','F5','G5','A5',  // Ebmaj7
+  'G5','F5','Eb5','D5',  // Dm7
+  'F5','D5','C5','D5',   // Gm7
+  'F5','D5','Bb4','-',   // Cm7
+  'Eb5','F5','G5','A5',  // Cm7
+  'G5','F5','Eb5','D5',  // F7
+  'F5','D5','C5','D5',   // Bbmaj7
+  'F5','Eb5','D5','C5',  // Ebmaj7
+  'Eb5','F5','G5','A5',  // Cm7
+  'G5','F5','Eb5','D5',  // F7
+  'F5','D5','C5','D5',   // Bbmaj7
+  'F5','D5','Bb4','-',   // Bbmaj7 (hold)
+  // repeat main theme
+  'F5','D5','C5','D5',   // Bbmaj7
+  'F5','D5','C5','D5',   // Dm7
+  'G5','F5','D5','C5',   // Gm7
+  'F5','Eb5','D5','C5',  // Ebmaj7
+  'F5','D5','C5','D5',
+  'F5','D5','C5','D5',
+  'G5','F5','D5','C5',
+  'F5','Eb5','D5','C5',
+  'Eb5','F5','G5','A5',  // Cm7
+  'G5','F5','Eb5','D5',  // F7
+  'F5','D5','C5','D5',   // Bbmaj7
+  'F5','Eb5','D5','C5',  // Ebmaj7
+  'Eb5','F5','G5','A5',  // Cm7
+  'G5','F5','Eb5','D5',  // F7
+  'F5','D5','C5','D5',   // Bbmaj7
+  'F5','D5','Bb4','-',   // Bbmaj7 (hold)
+];
+// Each chord gets 4 melody notes, each note is a quarter note in 4/4
+const CHORD_DURATION = 1.2; // seconds per chord (adjust for tempo)
+const NOTE_DURATION = CHORD_DURATION / 4; // seconds per melody note
+const CHORD_FADE = 0.06;
+const NOTE_FADE = 0.04;
+
+function playChord(audioCtx, chordNotes, time) {
+  chordNotes.forEach((note, i) => {
+    const freq = NOTE_FREQ[note];
+    const osc = audioCtx.createOscillator();
+    osc.type = i===0 ? 'triangle' : 'sine';
+    osc.frequency.value = freq;
+    const gain = audioCtx.createGain();
+    gain.gain.setValueAtTime(0, time);
+    gain.gain.linearRampToValueAtTime(0.13, time + CHORD_FADE);
+    gain.gain.setValueAtTime(0.13, time + CHORD_DURATION - CHORD_FADE);
+    gain.gain.linearRampToValueAtTime(0, time + CHORD_DURATION);
+    osc.connect(gain).connect(audioCtx.destination);
+    osc.start(time);
+    osc.stop(time + CHORD_DURATION);
+  });
+}
+
+function playMelodyNote(audioCtx, note, time) {
+  if (!note || note === '-') return;
+  const freq = NOTE_FREQ[note];
+  const osc = audioCtx.createOscillator();
+  osc.type = 'square';
+  osc.frequency.value = freq;
+  const gain = audioCtx.createGain();
+  gain.gain.setValueAtTime(0, time);
+  gain.gain.linearRampToValueAtTime(0.19, time + NOTE_FADE);
+  gain.gain.setValueAtTime(0.19, time + NOTE_DURATION - NOTE_FADE);
+  gain.gain.linearRampToValueAtTime(0, time + NOTE_DURATION);
+  osc.connect(gain).connect(audioCtx.destination);
+  osc.start(time);
+  osc.stop(time + NOTE_DURATION);
+}
+
+function showChord(name, delay) {
+  setTimeout(() => { document.getElementById('chord').textContent = name; }, delay * 1000);
+}
+function showMelody(note, delay) {
+  setTimeout(() => {
+    document.getElementById('melody').textContent = (note && note !== '-') ? note : '';
+  }, delay * 1000);
+}
+
+document.getElementById('play').onclick = async () => {
+  document.getElementById('play').disabled = true;
+  document.getElementById('chord').textContent = '';
+  document.getElementById('melody').textContent = '';
+
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  let now = audioCtx.currentTime + 0.2;
+
+  // Play chords and melody in sync
+  for (let i = 0; i < chordProgression.length; ++i) {
+    const chord = chordProgression[i];
+    playChord(audioCtx, CHORDS[chord], now + i * CHORD_DURATION);
+    showChord(chord, i * CHORD_DURATION);
+
+    // Play melody notes for this chord
+    let melodyStart = i * 4; // 4 notes per chord
+    for (let j = 0; j < 4; ++j) {
+      const note = melody[melodyStart + j];
+      playMelodyNote(audioCtx, note, now + i * CHORD_DURATION + j * NOTE_DURATION);
+      showMelody(note, i * CHORD_DURATION + j * NOTE_DURATION);
+    }
+  }
+
+  setTimeout(() => {
+    document.getElementById('play').disabled = false;
+    document.getElementById('chord').textContent = '';
+    document.getElementById('melody').textContent = '';
+  }, (chordProgression.length * CHORD_DURATION + 0.5) * 1000);
+};
+</script>
+</body>
+</html>
