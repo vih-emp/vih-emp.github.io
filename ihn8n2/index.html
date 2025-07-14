@@ -268,64 +268,7 @@
     </audio>
 </div>
 <script>
-/**
- * Plays the piston gate reveal animation.
- * Use pistonGateOpen() to play, pistonGateReplay() to play again.
- * The overlay will hide itself when finished.
- */
-function pistonGateOpen() {
-    var gate = document.getElementById('piston-gate');
-    if (!gate) return;
-    gate.style.display = '';
-    gate.classList.remove('revealed');
-    // Reset all steam
-    for(let i=1;i<=11;i++){
-        var el = document.getElementById('steam'+i);
-        if(el) el.classList.remove('puff','steam2','steam3','steam4','steam5','steam6');
-    }
-    setTimeout(function() {
-        var audio = document.getElementById('steam-audio');
-        if (audio) { audio.currentTime = 0; audio.play(); }
-        document.getElementById('steam1').classList.add('puff');
-        setTimeout(function(){document.getElementById('steam2').classList.add('puff');},120);
-        setTimeout(function(){document.getElementById('steam3').classList.add('puff');},210);
-        setTimeout(function(){document.getElementById('steam4').classList.add('puff');},260);
-        setTimeout(function(){document.getElementById('steam5').classList.add('puff');},320);
-        setTimeout(function(){document.getElementById('steam6').classList.add('puff');},410);
-        setTimeout(function(){document.getElementById('steam7').classList.add('puff');},530);
-        setTimeout(function(){document.getElementById('steam8').classList.add('puff');},450);
-        setTimeout(function(){document.getElementById('steam9').classList.add('puff');},500);
-        setTimeout(function(){document.getElementById('steam10').classList.add('puff');},600);
-        setTimeout(function(){document.getElementById('steam11').classList.add('puff');},720);
-    }, 2700);
-    setTimeout(function() {
-        gate.classList.add('revealed');
-        setTimeout(function(){
-            gate.style.display = 'none';
-        }, 1600);
-    }, 3000);
-}
-function pistonGateReplay() {
-    var gate = document.getElementById('piston-gate');
-    if (!gate) return;
-    gate.style.display = '';
-    window.scrollTo({top: 0, behavior: 'smooth'});
-    setTimeout(pistonGateOpen, 40);
-}
-// Uncomment to auto-play piston on load:
-window.addEventListener('DOMContentLoaded', pistonGateOpen);
-</script>
-  <canvas id="matrix-canvas"></canvas>
-  <div class="max-bg">
-    <div class="hr-title">I H N 8 N</div>
-    <div class="max-footer">
-      Press any letter key for a joke.<br>
-      Click the popup for a definition, click again to dismiss.
-    </div>
-  </div>
-  <div id="popup-root"></div>
-  <div id="glitch-bar"></div>
-<script>
+
   // -- Matrix background --
   const pastelMatrixColors = [
     "#b0ffb3", "#fce1ff", "#bbf7f7", "#ffd6fa", "#ffb2eb", "#abffe1", "#e7f2ef"
