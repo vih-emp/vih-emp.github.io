@@ -1,0 +1,127 @@
+<!-- pomdoro timer with big red button and nothing else. 25 min focus 5 min break. 15 min if after 4 seshs and a counter which add one tomato at end of each 25 min work period but reset after webpage reset -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Pomodoro Timer</title>
+</head>
+<body>
+	<!-- Content will go here -->
+</body>
+<style>
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background: #fff;
+        font-family: Arial, sans-serif;
+    }
+    #timer {
+        font-size: 5em;
+        margin-bottom: 30px;
+    }
+    #bigButton {
+        background: #e53935;
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        width: 200px;
+        height: 200px;
+        font-size: 2em;
+        cursor: pointer;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+        transition: background 0.2s;
+    }
+    #bigButton:active {
+        background: #b71c1c;
+    }
+    #tomatoCounter {
+        margin-top: 30px;
+        font-size: 2em;
+    }
+</style>
+<div id="timer">25:00</div>
+<button id="bigButton">Start</button>
+<div id="tomatoCounter"></div>
+<script>
+    const WORK_DURATION = 25 * 60;
+    const SHORT_BREAK = 5 * 60;
+    const LONG_BREAK = 15 * 60;
+    const SESSIONS_BEFORE_LONG_BREAK = 4;
+
+    let timer = WORK_DURATION;
+    let interval = null;
+    let isRunning = false;
+    let isWork = true;
+    let sessionCount = 0;
+    let tomatoes = 0;
+
+    const timerDisplay = document.getElementById('timer');
+    const button = document.getElementById('bigButton');
+    const tomatoCounter = document.getElementById('tomatoCounter');
+
+    function updateTimerDisplay() {
+        const min = String(Math.floor(timer / 60)).padStart(2, '0');
+        const sec = String(timer % 60).padStart(2, '0');
+        timerDisplay.textContent = `${min}:${sec}`;
+    }
+
+    function updateTomatoCounter() {
+        tomatoCounter.textContent = '🍅'.repeat(tomatoes);
+    }
+
+    function startTimer() {
+        if (interval) return;
+        isRunning = true;
+        button.textContent = 'Pause';
+        interval = setInterval(() => {
+            if (timer > 0) {
+                timer--;
+                updateTimerDisplay();
+            } else {
+                clearInterval(interval);
+                interval = null;
+                if (isWork) {
+                    tomatoes++;
+                    updateTomatoCounter();
+                    sessionCount++;
+                    if (sessionCount % SESSIONS_BEFORE_LONG_BREAK === 0) {
+                        timer = LONG_BREAK;
+                        isWork = false;
+                        button.textContent = 'Start Long Break';
+                    } else {
+                        timer = SHORT_BREAK;
+                        isWork = false;
+                        button.textContent = 'Start Break';
+                    }
+                } else {
+                    timer = WORK_DURATION;
+                    isWork = true;
+                    button.textContent = 'Start Work';
+                }
+                updateTimerDisplay();
+                isRunning = false;
+            }
+        }, 1000);
+    }
+
+    function pauseTimer() {
+        isRunning = false;
+        button.textContent = 'Resume';
+        clearInterval(interval);
+        interval = null;
+    }
+
+    button.addEventListener('click', () => {
+        if (!isRunning) {
+            startTimer();
+        } else {
+            pauseTimer();
+        }
+    });
+
+    updateTimerDisplay();
+    updateTomatoCounter();
+</script>
