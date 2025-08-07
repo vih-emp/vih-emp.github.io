@@ -1,0 +1,122 @@
+<!-- pomdoro timer with big red button and nothing else. 25 min focus 5 min break. 15 min if after 4 sesh and a counter which add one tomato at end of each 25 min work period-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Pomodoro Timer</title>
+	<style>
+		body {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			height: 100vh;
+			background: #fff;
+			font-family: Arial, sans-serif;
+		}
+		#timer {
+			font-size: 4em;
+			margin-bottom: 30px;
+		}
+		#bigRedButton {
+			width: 200px;
+			height: 200px;
+			border-radius: 50%;
+			background: red;
+			border: none;
+			color: white;
+			font-size: 2em;
+			cursor: pointer;
+			margin-bottom: 30px;
+			box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+		}
+		#tomatoCounter {
+			font-size: 2em;
+		}
+		.tomato {
+			color: #e74c3c;
+			font-size: 2em;
+		}
+	</style>
+</head>
+<body>
+	<div id="timer">25:00</div>
+	<button id="bigRedButton">Start</button>
+	<div id="tomatoCounter"></div>
+	<script>
+		const timerDisplay = document.getElementById('timer');
+		const button = document.getElementById('bigRedButton');
+		const tomatoCounter = document.getElementById('tomatoCounter');
+
+		let isRunning = false;
+		let isFocus = true;
+		let sessionCount = 0;
+		let tomatoes = 0;
+		let interval;
+		let timeLeft = 25 * 60;
+
+		function updateTimerDisplay() {
+			const min = String(Math.floor(timeLeft / 60)).padStart(2, '0');
+			const sec = String(timeLeft % 60).padStart(2, '0');
+			timerDisplay.textContent = `${min}:${sec}`;
+		}
+
+		function updateTomatoCounter() {
+			tomatoCounter.innerHTML = 'Tomatoes: ' + '🍅'.repeat(tomatoes);
+		}
+
+		function startTimer() {
+			if (isRunning) return;
+			isRunning = true;
+			button.textContent = 'Pause';
+			interval = setInterval(() => {
+				if (timeLeft > 0) {
+					timeLeft--;
+					updateTimerDisplay();
+				} else {
+					clearInterval(interval);
+					isRunning = false;
+					if (isFocus) {
+						sessionCount++;
+						tomatoes++;
+						updateTomatoCounter();
+						if (sessionCount % 4 === 0) {
+							// Long break
+							timeLeft = 15 * 60;
+						} else {
+							// Short break
+							timeLeft = 5 * 60;
+						}
+						isFocus = false;
+						button.textContent = 'Start Break';
+					} else {
+						// After break, start focus
+						timeLeft = 25 * 60;
+						isFocus = true;
+						button.textContent = 'Start';
+					}
+					updateTimerDisplay();
+				}
+			}, 1000);
+		}
+
+		function pauseTimer() {
+			isRunning = false;
+			clearInterval(interval);
+			button.textContent = 'Resume';
+		}
+
+		button.addEventListener('click', () => {
+			if (!isRunning) {
+				startTimer();
+			} else {
+				pauseTimer();
+			}
+		});
+
+		updateTimerDisplay();
+		updateTomatoCounter();
+	</script>
+</body>
+</html>
