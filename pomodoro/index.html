@@ -1,144 +1,145 @@
-<!-- pomdoro timer with big red button and nothing else. 25 min focus 5 min break. 15 min if after 4 sesh and a counter which add one tomato at end of each 25 min work period-->
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"></html>
 <head>
 	<meta charset="UTF-8">
 	<title>Pomodoro Timer</title>
 	<style>
-		body {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			justify-content: center;
-			height: 100vh;
-			background: #fff;
-			font-family: Arial, sans-serif;
-		}
-		#timer {
-			font-size: 4em;
-			margin-bottom: 30px;
-		}
-		#bigRedButton {
-			width: 200px;
-			height: 200px;
-			border-radius: 50%;
-			background: red;
-			border: none;
-			color: white;
-			font-size: 2em;
-			cursor: pointer;
-			margin-bottom: 30px;
-			box-shadow: 0 4px 16px rgba(0,0,0,0.2);
-		}
-		#tomatoCounter {
-			font-size: 2em;
-		}
-		.tomato {
-			color: #e74c3c;
-			font-size: 2em;
-		}
+		body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+		#timer { font-size: 48px; margin-bottom: 20px; }
+		#tomatoes { font-size: 24px; margin-bottom: 20px; }
+		button { font-size: 18px; padding: 10px 20px; }
 	</style>
 </head>
 <body>
 	<div id="timer">25:00</div>
-	<button id="bigRedButton">Start</button>
-	<div id="tomatoCounter"></div>
-	<script>
-		const timerDisplay = document.getElementById('timer');
-		const button = document.getElementById('bigRedButton');
-		const tomatoCounter = document.getElementById('tomatoCounter');
+	<div id="tomatoes">🍅: 0</div>
+	<button id="startPause">Start</button>
+	<button id="reset">Reset</button>
 
-		let isRunning = false;
+	<script>
+		let timeLeft = 25 * 60;
+		let timer = null;
 		let isFocus = true;
 		let sessionCount = 0;
 		let tomatoes = 0;
-		let interval;
-		let timeLeft = 25 * 60;
 
-		// Load tomatoes and bonus from localStorage
-		if (localStorage.getItem('tomatoes')) {
-			tomatoes = parseInt(localStorage.getItem('tomatoes'), 10) || 0;
-		}
-		let bonusGiven = localStorage.getItem('bonusGiven') === 'true';
-
-		function saveTomatoes() {
-			localStorage.setItem('tomatoes', tomatoes);
-		}
+		const timerDisplay = document.getElementById('timer');
+		const tomatoDisplay = document.getElementById('tomatoes');
+		const button = document.getElementById('startPause');
+		const resetButton = document.getElementById('reset');
 
 		function updateTimerDisplay() {
-			const min = String(Math.floor(timeLeft / 60)).padStart(2, '0');
-			const sec = String(timeLeft % 60).padStart(2, '0');
+			const min = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+			const sec = (timeLeft % 60).toString().padStart(2, '0');
 			timerDisplay.textContent = `${min}:${sec}`;
 		}
 
 		function updateTomatoCounter() {
-			tomatoCounter.innerHTML = 'Tomatoes: ' + '🍅'.repeat(tomatoes);
+			tomatoDisplay.textContent = `🍅: ${tomatoes}`;
+		}
+
+		function saveTomatoes() {
+			localStorage.setItem('pomodoroTomatoes', tomatoes);
+		}
+
+		function loadTomatoes() {
+			const saved = localStorage.getItem('pomodoroTomatoes');
+			if (saved) tomatoes = parseInt(saved, 10);
+			updateTomatoCounter();
+		}
+
+		function playSoothingSound() {
+			return new Promise((resolve) => {
+				const ctx = new (window.AudioContext || window.webkitAudioContext)();
+				const oscillator = ctx.createOscillator();
+				const gain = ctx.createGain();
+
+				oscillator.type = 'sine';
+				oscillator.frequency.setValueAtTime(440, ctx.currentTime); // A4 note
+				gain.gain.setValueAtTime(0.1, ctx.currentTime); // Soft volume
+
+				oscillator.connect(gain);
+				gain.connect(ctx.destination);
+
+				oscillator.start();
+				oscillator.stop(ctx.currentTime + 1.2); // 1.2 seconds
+
+				oscillator.onended = () => {
+					ctx.close();
+					resolve();
+				};
+			});
+		}
+
+		function playSoothingAndStartNext() {
+			playSoothingSound().then(() => {
+				if (isFocus) {
+					sessionCount++;
+					tomatoes++;
+					saveTomatoes();
+					updateTomatoCounter();
+					if (sessionCount % 4 === 0) {
+						timeLeft = 15 * 60; // Long break
+					} else {
+						timeLeft = 5 * 60; // Short break
+					}
+					isFocus = false;
+					button.textContent = 'Pause Break';
+				} else {
+					timeLeft = 25 * 60; // Focus
+					isFocus = true;
+					button.textContent = 'Pause';
+				}
+				updateTimerDisplay();
+				startTimer(); // Auto-start next period
+			});
 		}
 
 		function startTimer() {
-			if (isRunning) return;
-			isRunning = true;
-			button.textContent = 'Pause';
-			interval = setInterval(() => {
+			if (timer) return;
+			timer = setInterval(() => {
 				if (timeLeft > 0) {
 					timeLeft--;
 					updateTimerDisplay();
 				} else {
-					clearInterval(interval);
-					isRunning = false;
-					if (isFocus) {
-						sessionCount++;
-						tomatoes++;
-						saveTomatoes();
-						updateTomatoCounter();
-						if (sessionCount % 4 === 0) {
-							// Long break
-							timeLeft = 15 * 60;
-						} else {
-							// Short break
-							timeLeft = 5 * 60;
-						}
-						isFocus = false;
-						button.textContent = 'Start Break';
-					} else {
-						// After break, start focus
-						timeLeft = 25 * 60;
-						isFocus = true;
-						button.textContent = 'Start';
-					}
-					updateTimerDisplay();
+					clearInterval(timer);
+					timer = null;
+					playSoothingAndStartNext();
 				}
 			}, 1000);
+			button.textContent = isFocus ? 'Pause' : 'Pause Break';
 		}
 
 		function pauseTimer() {
-			isRunning = false;
-			clearInterval(interval);
-			button.textContent = 'Resume';
+			if (timer) {
+				clearInterval(timer);
+				timer = null;
+				button.textContent = isFocus ? 'Start' : 'Start Break';
+			}
+		}
+
+		function resetTimer() {
+			pauseTimer();
+			timeLeft = 25 * 60;
+			isFocus = true;
+			sessionCount = 0;
+			updateTimerDisplay();
+			button.textContent = 'Start';
 		}
 
 		button.addEventListener('click', () => {
-			if (!isRunning) {
-				startTimer();
-			} else {
+			if (timer) {
 				pauseTimer();
+			} else {
+				startTimer();
 			}
 		});
 
-		// Shift+Right Arrow for bonus tomato (only once)
-		window.addEventListener('keydown', (e) => {
-			if (e.shiftKey && e.code === 'ArrowRight' && !bonusGiven) {
-				tomatoes++;
-				saveTomatoes();
-				updateTomatoCounter();
-				bonusGiven = true;
-				localStorage.setItem('bonusGiven', 'true');
-			}
-		});
+		resetButton.addEventListener('click', resetTimer);
 
+		// Initialize
+		loadTomatoes();
 		updateTimerDisplay();
-		updateTomatoCounter();
 	</script>
 </body>
 </html>
