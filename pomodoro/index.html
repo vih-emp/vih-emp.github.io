@@ -56,6 +56,16 @@
 		let interval;
 		let timeLeft = 25 * 60;
 
+		// Load tomatoes and bonus from localStorage
+		if (localStorage.getItem('tomatoes')) {
+			tomatoes = parseInt(localStorage.getItem('tomatoes'), 10) || 0;
+		}
+		let bonusGiven = localStorage.getItem('bonusGiven') === 'true';
+
+		function saveTomatoes() {
+			localStorage.setItem('tomatoes', tomatoes);
+		}
+
 		function updateTimerDisplay() {
 			const min = String(Math.floor(timeLeft / 60)).padStart(2, '0');
 			const sec = String(timeLeft % 60).padStart(2, '0');
@@ -80,6 +90,7 @@
 					if (isFocus) {
 						sessionCount++;
 						tomatoes++;
+						saveTomatoes();
 						updateTomatoCounter();
 						if (sessionCount % 4 === 0) {
 							// Long break
@@ -112,6 +123,17 @@
 				startTimer();
 			} else {
 				pauseTimer();
+			}
+		});
+
+		// Shift+Right Arrow for bonus tomato (only once)
+		window.addEventListener('keydown', (e) => {
+			if (e.shiftKey && e.code === 'ArrowRight' && !bonusGiven) {
+				tomatoes++;
+				saveTomatoes();
+				updateTomatoCounter();
+				bonusGiven = true;
+				localStorage.setItem('bonusGiven', 'true');
 			}
 		});
 
